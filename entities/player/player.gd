@@ -28,11 +28,19 @@ signal interacted
 @export var attack_anim_speed := 1.3
 @export var evade_anim_speed := 2.2
 @export var evade_distance := 5.0
+@export var evade_stamina_cost := 30.0
+@export var run_stamina_cost := 10.0
 @export var interact_anim_speed := 1.5
-@export var sword_size := 0.6
+@export var sword_size := 0.85
+@export var defend_speed := 2.5
+# How much of a hit still gets through a defense
+@export var defend_damage_scale := 0.3
+@export var focus_distance := 25.0
+@export var focus_angle := 60.0
 
 @onready var bark_audio: AudioStreamPlayer3D = $Latido
 @onready var footsteps = $Passos
+@onready var camera_controller = $CameraController
 @onready var camera = $CameraController/Camera3D
 @onready var model = $Model
 @onready var anim_player: AnimationPlayer = $Model/AnimationPlayer
@@ -52,7 +60,11 @@ const ANIMATIONS := {
 	"interact": preload("res://entities/player/animations/interact.fbx"),
 	"draw": preload("res://entities/player/animations/withdrawing_sword.fbx"),
 	"sheathe": preload("res://entities/player/animations/sheathing_sword.fbx"),
+	"defense": preload("res://entities/player/animations/defense.fbx"),
 }
+# Bones that hold the defense pose while the dog walks; the legs keep running
+const UPPER_BODY := ["Spine", "Neck", "Head", "Shoulder", "Arm", "Hand"]
+const EYE_HEIGHT := 1.0
 const SWORD := preload("res://entities/player/sword.tscn")
 const BARK_SOUNDS: Array[AudioStream] = [
 	preload("res://entities/player/audio/bark1.mp3"),
@@ -110,16 +122,21 @@ var sword_drawn := false
 var evade_velocity := Vector2.ZERO
 var sword_in_hand: Node3D
 var sword_on_hip: Node3D
+var is_defending := false
+var focus_target: Node3D
+var focus_marker: MeshInstance3D
 
 func _ready() -> void:
 	load_animations()
 	setup_sword()
+	setup_focus_marker()
 
 func _physics_process(delta: float) -> void:
 	action_logic(delta)
 	jump_logic(delta)
 	move_logic(delta)
 	move_and_slide()
+	focus_logic()
 	animation_logic()
 	bark_logic(delta)
 	# Sneaking makes no noise
@@ -142,13 +159,20 @@ func bark_logic(delta: float) -> void:
 func move_logic(delta) -> void:
 	movement_input = Input.get_vector("left", "right", "forward", "backward").rotated(-camera.global_rotation.y)
 	var vel_2d = Vector2(velocity.x, velocity.z)
-	is_running = Input.is_action_pressed("run")
+	# Running needs stamina; out of it the dog falls back to walking
+	is_running = Input.is_action_pressed("run") and GameState.stamina > 0.0
+	if is_defending:
+		is_running = false
+	if is_running and action == "" and not is_sneaking and is_on_floor() and movement_input != Vector2.ZERO:
+		GameState.drain_stamina(run_stamina_cost * delta)
 	if action == "" and Input.is_action_just_pressed("sneak"):
 		set_sneaking(not is_sneaking)
-	
+
 	var speed = run_speed if is_running else based_speed
 	if is_sneaking:
 		speed = sneak_speed
+	elif is_defending:
+		speed = defend_speed
 	var target_vel = movement_input * speed
 	# Actions hold the player in place, except the evade, which rolls it away
 	if action == "evade":
@@ -164,7 +188,10 @@ func move_logic(delta) -> void:
 	velocity.x = vel_2d.x
 	velocity.z = vel_2d.y
 
-	if action == "" and movement_input != Vector2.ZERO:
+	if action == "" and focus_target != null:
+		# Keeps facing the focused target, whichever way the dog walks
+		model.rotation.y = lerp_angle(model.rotation.y, angle_to_focus(), turn_speed * delta)
+	elif action == "" and movement_input != Vector2.ZERO:
 		var target_angle = atan2(movement_input.x, movement_input.y)
 		model.rotation.y = lerp_angle(model.rotation.y, target_angle, turn_speed * delta)
 
@@ -201,6 +228,8 @@ func jump_logic(delta) -> void:
 
 # Sword, attack combo, evade and interact: one at a time, each plays its animation to the end
 func action_logic(delta: float) -> void:
+	# The defense lasts for as long as the button is held, and the dog can walk with it
+	is_defending = action == "" and is_on_floor() and not is_sneaking and Input.is_action_pressed("defend")
 	if action != "":
 		action_time += delta
 		action_left -= delta
@@ -263,13 +292,16 @@ func finish_action() -> void:
 
 func start_attack(step: int) -> void:
 	combo_step = step
-	if movement_input != Vector2.ZERO:
+	if focus_target != null:
+		model.rotation.y = angle_to_focus()
+	elif movement_input != Vector2.ZERO:
 		model.rotation.y = atan2(movement_input.x, movement_input.y)
 	start_action("attack", COMBO_SECTIONS[step], attack_anim_speed)
 	attacked.emit(step)
 
 # Rolls towards where the player is pushing, or backwards when standing still
 func start_evade() -> void:
+	if not GameState.use_stamina(evade_stamina_cost): return
 	var direction := movement_input.normalized()
 	if direction == Vector2.ZERO:
 		direction = -Vector2(sin(model.rotation.y), cos(model.rotation.y))
@@ -279,12 +311,78 @@ func start_evade() -> void:
 	# Turns the model so the roll in the animation goes the same way the player moves
 	model.rotation.y = atan2(direction.x, direction.y) - atan2(EVADE_TRAVEL.x, EVADE_TRAVEL.y)
 
+# A hit is blocked when the dog is defending and facing whoever is hitting
+func is_blocking(from: Vector3) -> bool:
+	if not is_defending: return false
+	var to_attacker := Vector2(from.x - global_position.x, from.z - global_position.z)
+	var facing := Vector2(sin(model.rotation.y), cos(model.rotation.y))
+	return absf(facing.angle_to(to_attacker)) < PI / 2.0
+
+# The focus button locks onto what is ahead of the camera, and lets go when pressed again
+func focus_logic() -> void:
+	if Input.is_action_just_pressed("focus"):
+		focus_target = null if focus_target != null else find_focus_target()
+	if focus_target != null and not can_focus(focus_target, focus_distance * 1.2):
+		focus_target = null
+	focus_marker.visible = focus_target != null
+	camera_controller.has_focus = focus_target != null
+	if focus_target == null: return
+	focus_marker.global_position = get_focus_point(focus_target)
+	camera_controller.focus_point = focus_marker.global_position
+
+# Picks, from the "focusable" group, the one closest to the middle of the screen
+func find_focus_target() -> Node3D:
+	var forward: Vector3 = -camera.global_basis.z
+	var best: Node3D = null
+	var best_angle := deg_to_rad(focus_angle)
+	for target in get_tree().get_nodes_in_group("focusable"):
+		if not can_focus(target, focus_distance): continue
+		var angle := forward.angle_to(get_focus_point(target) - camera.global_position)
+		if angle < best_angle:
+			best = target
+			best_angle = angle
+	return best
+
+# The target has to be close enough and with nothing between it and the dog
+func can_focus(target: Node3D, max_distance: float) -> bool:
+	if not is_instance_valid(target): return false
+	var eye := global_position + Vector3.UP * EYE_HEIGHT
+	var point := get_focus_point(target)
+	if eye.distance_to(point) > max_distance: return false
+	var query := PhysicsRayQueryParameters3D.create(eye, point)
+	query.exclude = [get_rid()]
+	var hit := get_world_3d().direct_space_state.intersect_ray(query)
+	return hit.is_empty() or hit.collider == target
+
+func get_focus_point(target: Node3D) -> Vector3:
+	return target.get_focus_point() if target.has_method("get_focus_point") else target.global_position
+
+func angle_to_focus() -> float:
+	var to_target := get_focus_point(focus_target) - global_position
+	return atan2(to_target.x, to_target.z)
+
+# A dot that floats on the focused target, drawn over everything else
+func setup_focus_marker() -> void:
+	var material := StandardMaterial3D.new()
+	material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	material.albedo_color = Color(1.0, 0.85, 0.2)
+	material.no_depth_test = true
+	var mesh := SphereMesh.new()
+	mesh.radius = 0.15
+	mesh.height = 0.3
+	mesh.material = material
+	focus_marker = MeshInstance3D.new()
+	focus_marker.mesh = mesh
+	focus_marker.top_level = true
+	focus_marker.visible = false
+	add_child(focus_marker)
+
 # Two swords follow the skeleton, one in the right hand and one on the left hip; only one shows at a time
 func setup_sword() -> void:
 	var skeleton: Skeleton3D = $Model/Skeleton3D
 	# Positions and directions as seen on the T-pose: x is the dog's left, z is forward (meters)
 	sword_in_hand = attach_sword(skeleton, "mixamorig_RightHand", Vector3(-0.09, -0.02, 0.0), Basis(Vector3.RIGHT, Vector3.BACK, Vector3.DOWN))
-	var blade_down := Vector3(0.0, -0.86, -0.5).normalized()
+	var blade_down := Vector3(0.0, -0.55, -0.83).normalized()
 	sword_on_hip = attach_sword(skeleton, "mixamorig_Hips", Vector3(0.17, 0.0, 0.0), Basis(blade_down.cross(Vector3.RIGHT), blade_down, Vector3.RIGHT))
 	show_sword(false)
 
@@ -318,6 +416,11 @@ func animation_logic() -> void:
 		# Stays in the crouched pose when stopped, frozen on the current frame
 		play_animation("walk")
 		anim_player.speed_scale = minf(ground_speed / NATURAL_SPEED["walk"], max_anim_speed)
+	elif is_defending and ground_speed > 0.1:
+		play_animation("defend_walk")
+		anim_player.speed_scale = clampf(ground_speed / NATURAL_SPEED["run"], 0.5, max_anim_speed)
+	elif is_defending:
+		play_animation("defense")
 	elif ground_speed > 0.1:
 		# Play the animation fast enough for the feet to keep up with the current speed
 		play_animation("run")
@@ -358,6 +461,30 @@ func load_animations() -> void:
 		if is_air_anim:
 			anim.length = AIR_SECTIONS[anim_name].y
 		library.add_animation(anim_name, anim)
+	# Walking while defending: the legs of the run with the guard of the defense
+	if not library.has_animation("defend_walk"):
+		library.add_animation("defend_walk", with_defense_pose(library.get_animation("run")))
+
+# Copy of an animation with the upper body frozen in the defense pose
+func with_defense_pose(base: Animation) -> Animation:
+	var defense := anim_player.get_animation("defense")
+	var anim: Animation = base.duplicate()
+	for track in defense.get_track_count():
+		var path := defense.track_get_path(track)
+		if defense.track_get_type(track) != Animation.TYPE_ROTATION_3D or not is_upper_body(path): continue
+		var old_track := anim.find_track(path, Animation.TYPE_ROTATION_3D)
+		if old_track != -1:
+			anim.remove_track(old_track)
+		var new_track := anim.add_track(Animation.TYPE_ROTATION_3D)
+		anim.track_set_path(new_track, path)
+		anim.rotation_track_insert_key(new_track, 0.0, defense.track_get_key_value(track, 0))
+	return anim
+
+func is_upper_body(path: NodePath) -> bool:
+	for bone in UPPER_BODY:
+		if bone in str(path):
+			return true
+	return false
 
 # Removes the travel baked into the animation, the script is what moves the player
 func lock_hips_in_place(anim: Animation, lock_height := false) -> void:

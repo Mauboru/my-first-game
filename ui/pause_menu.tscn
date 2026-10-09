@@ -44,7 +44,57 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 26
 text = "Reiniciar"
 
+[node name="Opcoes" type="Button" parent="Centro/Caixa"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 26
+text = "Opções"
+
 [node name="Sair" type="Button" parent="Centro/Caixa"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 26
 text = "Sair do jogo"
+
+[node name="PainelOpcoes" type="VBoxContainer" parent="Centro"]
+visible = false
+custom_minimum_size = Vector2(420, 0)
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Titulo" type="Label" parent="Centro/PainelOpcoes"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
+text = "OPÇÕES"
+horizontal_alignment = 1
+
+[node name="VolumeTexto" type="Label" parent="Centro/PainelOpcoes"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "Volume"
+
+[node name="Volume" type="HSlider" parent="Centro/PainelOpcoes"]
+layout_mode = 2
+max_value = 1.0
+step = 0.05
+value = 1.0
+
+[node name="SensibilidadeTexto" type="Label" parent="Centro/PainelOpcoes"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "Sensibilidade da câmera"
+
+[node name="Sensibilidade" type="HSlider" parent="Centro/PainelOpcoes"]
+layout_mode = 2
+min_value = 0.2
+max_value = 3.0
+step = 0.1
+value = 1.0
+
+[node name="TelaCheia" type="CheckButton" parent="Centro/PainelOpcoes"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "Tela cheia"
+
+[node name="Voltar" type="Button" parent="Centro/PainelOpcoes"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 26
+text = "Voltar"

@@ -1,0 +1,253 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://ui/hud.gd" id="1_script"]
+
+[sub_resource type="StyleBoxFlat" id="bar_bg"]
+bg_color = Color(0, 0, 0, 0.55)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="health_fill"]
+bg_color = Color(0.86, 0.22, 0.22, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="stamina_fill"]
+bg_color = Color(0.95, 0.8, 0.25, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="xp_fill"]
+bg_color = Color(0.45, 0.7, 1, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="noise_fill"]
+bg_color = Color(1, 0.5, 0.2, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[node name="HUD" type="CanvasLayer"]
+script = ExtResource("1_script")
+
+[node name="Dano" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.8, 0, 0, 0)
+
+[node name="Status" type="VBoxContainer" parent="."]
+offset_left = 24.0
+offset_top = 20.0
+offset_right = 264.0
+offset_bottom = 84.0
+theme_override_constants/separation = 6
+
+[node name="Health" type="ProgressBar" parent="Status"]
+custom_minimum_size = Vector2(240, 18)
+layout_mode = 2
+theme_override_styles/background = SubResource("bar_bg")
+theme_override_styles/fill = SubResource("health_fill")
+value = 100.0
+show_percentage = false
+
+[node name="Stamina" type="ProgressBar" parent="Status"]
+custom_minimum_size = Vector2(190, 10)
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_styles/background = SubResource("bar_bg")
+theme_override_styles/fill = SubResource("stamina_fill")
+value = 100.0
+show_percentage = false
+
+[node name="Level" type="HBoxContainer" parent="Status"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="LevelLabel" type="Label" parent="Status/Level"]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 14
+text = "Nv 1"
+
+[node name="XP" type="ProgressBar" parent="Status/Level"]
+custom_minimum_size = Vector2(140, 6)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_styles/background = SubResource("bar_bg")
+theme_override_styles/fill = SubResource("xp_fill")
+show_percentage = false
+
+[node name="Objetivos" type="VBoxContainer" parent="."]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -444.0
+offset_top = 18.0
+offset_right = -24.0
+offset_bottom = 110.0
+grow_horizontal = 0
+theme_override_constants/separation = 2
+
+[node name="Titulo" type="Label" parent="Objetivos"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.45, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 13
+text = "OBJETIVO"
+horizontal_alignment = 2
+
+[node name="Lista" type="Label" parent="Objetivos"]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_font_sizes/font_size = 18
+horizontal_alignment = 2
+
+[node name="Escondido" type="Label" parent="."]
+visible = false
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -200.0
+offset_top = 18.0
+offset_right = 200.0
+offset_bottom = 46.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0.5, 1, 0.6, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_font_sizes/font_size = 18
+text = "ESCONDIDO"
+horizontal_alignment = 1
+
+[node name="Barulho" type="VBoxContainer" parent="."]
+visible = false
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -130.0
+offset_top = -150.0
+offset_right = 130.0
+offset_bottom = -118.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/separation = 3
+
+[node name="Titulo" type="Label" parent="Barulho"]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 12
+text = "BARULHO"
+horizontal_alignment = 1
+
+[node name="Barra" type="ProgressBar" parent="Barulho"]
+custom_minimum_size = Vector2(260, 10)
+layout_mode = 2
+theme_override_styles/background = SubResource("bar_bg")
+theme_override_styles/fill = SubResource("noise_fill")
+max_value = 1.0
+step = 0.01
+show_percentage = false
+
+[node name="Mensagem" type="Label" parent="."]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -420.0
+offset_top = -104.0
+offset_right = 420.0
+offset_bottom = -44.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 7
+theme_override_font_sizes/font_size = 20
+horizontal_alignment = 1
+vertical_alignment = 2
+autowrap_mode = 3
+
+[node name="Vitoria" type="ColorRect" parent="."]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.75)
+
+[node name="Centro" type="VBoxContainer" parent="Vitoria"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 18
+alignment = 1
+
+[node name="Titulo" type="Label" parent="Vitoria/Centro"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.45, 1)
+theme_override_font_sizes/font_size = 56
+text = "VOCÊ FUGIU!"
+horizontal_alignment = 1
+
+[node name="Dica" type="Label" parent="Vitoria/Centro"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8, 0.8, 0.8, 1)
+theme_override_font_sizes/font_size = 20
+text = "Enter para jogar de novo"
+horizontal_alignment = 1
+
+[node name="Derrota" type="ColorRect" parent="."]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.25, 0, 0, 0.75)
+
+[node name="Centro" type="VBoxContainer" parent="Derrota"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 18
+alignment = 1
+
+[node name="Titulo" type="Label" parent="Derrota/Centro"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 56
+text = "VOCÊ FOI PEGO"
+horizontal_alignment = 1
+
+[node name="Dica" type="Label" parent="Derrota/Centro"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8, 0.8, 0.8, 1)
+theme_override_font_sizes/font_size = 20
+text = "Enter para tentar de novo"
+horizontal_alignment = 1

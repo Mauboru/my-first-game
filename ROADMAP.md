@@ -19,16 +19,16 @@ As etapas estão na ordem recomendada. As etapas 0 e 1 vêm primeiro porque toda
 
 ### 0. Fundação
 
-- [ ] Criar o repositório git
-- [ ] Criar o autoload `GameState` para guardar vida, inventário, missões e XP fora da cena
-- [ ] Tirar o HUD de dentro de `levels/house/house.gd` para uma cena própria
+- [x] Criar o repositório git
+- [x] Criar o autoload `GameState` para guardar vida, inventário, missões e XP fora da cena
+- [x] Tirar o HUD de dentro de `levels/house/house.gd` para uma cena própria
 - [x] Adicionar as ações de input: atacar, esquivar, interagir, inventário, mapa e pausa
 
 ### 1. Casca do jogo
 
 - [ ] Menu principal (Novo jogo, Continuar, Opções, Sair)
 - [ ] Pausa (hoje o Esc só solta o mouse)
-- [ ] Opções de volume, sensibilidade e tela cheia
+- [x] Opções de volume, sensibilidade e tela cheia
 - [ ] Transição entre cenas
 - [ ] Telas de game over e vitória refeitas
 

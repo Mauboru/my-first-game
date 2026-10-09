@@ -19,12 +19,10 @@ func close() -> void:
 	visible = false
 	get_tree().paused = false
 
-# The level says what the player is carrying
 func refresh() -> void:
 	for child in list.get_children():
 		child.queue_free()
-	var level := get_parent()
-	var items: Array = level.get_inventory() if level.has_method("get_inventory") else []
+	var items: Array = GameState.get_item_names()
 	if items.is_empty():
 		items = ["(vazio)"]
 	for item in items:

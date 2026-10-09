@@ -5,16 +5,6 @@
 [ext_resource type="PackedScene" path="res://entities/enemie/enemie.tscn" id="enemie"]
 [ext_resource type="Texture2D" uid="uid://bc68tbqeq0kgk" path="res://assets/textures/floor.jpg" id="floor_tex"]
 [ext_resource type="Texture2D" uid="uid://8plcv04j21wa" path="res://assets/textures/floor_wooden.jpg" id="floor_wooden_tex"]
-[ext_resource type="Texture2D" uid="uid://cy3e80yecvnq3" path="res://assets/textures/grass.jpg" id="grass_tex"]
-[ext_resource type="Script" uid="uid://cjodc4tc7kq47" path="res://levels/house/hide_spot.gd" id="hide_script"]
-[ext_resource type="Script" uid="uid://j0h2nmb27ylh" path="res://levels/house/house.gd" id="house_script"]
-[ext_resource type="Texture2D" uid="uid://phoq8andv05k" path="res://assets/sprites/mom.png" id="mom_tex"]
-[ext_resource type="Texture2D" uid="uid://cmbh5nvx1knae" path="res://assets/sky/moon.png" id="moon_tex"]
-[ext_resource type="PackedScene" path="res://ui/pause_menu.tscn" id="pause_menu"]
-[ext_resource type="Script" uid="uid://bvgecexwq01nw" path="res://levels/house/pickup.gd" id="pickup_script"]
-[ext_resource type="PackedScene" uid="uid://dgkyklooaehx8" path="res://entities/player/player.tscn" id="player"]
-[ext_resource type="Shader" uid="uid://q3bvt0n6ptk8" path="res://levels/house/night_sky.gdshader" id="sky_shader"]
-[ext_resource type="Texture2D" uid="uid://dj1tkpofrgnik" path="res://assets/sky/sky.png" id="sky_tex"]
 [ext_resource type="PackedScene" uid="uid://8odbx04rh004" path="res://assets/furniture/BedDouble.fbx" id="furn_BedDouble"]
 [ext_resource type="PackedScene" uid="uid://ogcbdhhsf3sx" path="res://assets/furniture/Bookcase_Books.fbx" id="furn_Bookcase_Books"]
 [ext_resource type="PackedScene" uid="uid://burelcnsbadsf" path="res://assets/furniture/Chair.fbx" id="furn_Chair"]
@@ -27,8 +17,19 @@
 [ext_resource type="PackedScene" uid="uid://qvwimhes3stf" path="res://assets/furniture/Stool.fbx" id="furn_Stool"]
 [ext_resource type="PackedScene" uid="uid://bphjwd3aya18" path="res://assets/furniture/Table.fbx" id="furn_Table"]
 [ext_resource type="PackedScene" uid="uid://c8ts0k2u8fc3v" path="res://assets/furniture/Table2.fbx" id="furn_Table2"]
+[ext_resource type="Texture2D" uid="uid://cy3e80yecvnq3" path="res://assets/textures/grass.jpg" id="grass_tex"]
+[ext_resource type="Script" uid="uid://cjodc4tc7kq47" path="res://levels/house/hide_spot.gd" id="hide_script"]
+[ext_resource type="Script" uid="uid://j0h2nmb27ylh" path="res://levels/house/house.gd" id="house_script"]
+[ext_resource type="PackedScene" path="res://ui/hud.tscn" id="hud"]
 [ext_resource type="PackedScene" path="res://ui/inventory_screen.tscn" id="inventory_screen"]
 [ext_resource type="PackedScene" path="res://ui/map_screen.tscn" id="map_screen"]
+[ext_resource type="Texture2D" uid="uid://phoq8andv05k" path="res://assets/sprites/mom.png" id="mom_tex"]
+[ext_resource type="Texture2D" uid="uid://cmbh5nvx1knae" path="res://assets/sky/moon.png" id="moon_tex"]
+[ext_resource type="PackedScene" path="res://ui/pause_menu.tscn" id="pause_menu"]
+[ext_resource type="Script" uid="uid://bvgecexwq01nw" path="res://levels/house/pickup.gd" id="pickup_script"]
+[ext_resource type="PackedScene" uid="uid://dgkyklooaehx8" path="res://entities/player/player.tscn" id="player"]
+[ext_resource type="Shader" uid="uid://q3bvt0n6ptk8" path="res://levels/house/night_sky.gdshader" id="sky_shader"]
+[ext_resource type="Texture2D" uid="uid://dj1tkpofrgnik" path="res://assets/sky/sky.png" id="sky_tex"]
 
 [sub_resource type="ShaderMaterial" id="sky_mat"]
 shader = ExtResource("sky_shader")
@@ -69,8 +70,9 @@ uv1_world_triplanar = true
 [sub_resource type="StandardMaterial3D" id="mat_wall"]
 albedo_color = Color(0.87, 0.82, 0.72, 1)
 
-[sub_resource type="StandardMaterial3D" id="mat_door"]
-albedo_color = Color(0.45, 0.28, 0.15, 1)
+[sub_resource type="StandardMaterial3D" id="mat_invisible"]
+transparency = 1
+albedo_color = Color(1, 1, 1, 0)
 
 [sub_resource type="StandardMaterial3D" id="mat_ceiling"]
 albedo_color = Color(0.92, 0.91, 0.88, 1)
@@ -80,18 +82,6 @@ albedo_color = Color(0.7, 0.3, 0.28, 1)
 
 [sub_resource type="StandardMaterial3D" id="mat_sofa"]
 albedo_color = Color(0.3, 0.45, 0.6, 1)
-
-[sub_resource type="StandardMaterial3D" id="mat_hide_dark"]
-albedo_color = Color(0.08, 0.07, 0.07, 1)
-
-[sub_resource type="StandardMaterial3D" id="mat_sofa_dark"]
-albedo_color = Color(0.24, 0.36, 0.5, 1)
-
-[sub_resource type="StandardMaterial3D" id="mat_wood"]
-albedo_color = Color(0.5, 0.33, 0.18, 1)
-
-[sub_resource type="StandardMaterial3D" id="mat_wood_dark"]
-albedo_color = Color(0.33, 0.21, 0.12, 1)
 
 [sub_resource type="StandardMaterial3D" id="mat_black"]
 albedo_color = Color(0.06, 0.06, 0.07, 1)
@@ -110,6 +100,9 @@ emission_energy_multiplier = 3.0
 
 [sub_resource type="StandardMaterial3D" id="mat_cardboard"]
 albedo_color = Color(0.72, 0.56, 0.38, 1)
+
+[sub_resource type="StandardMaterial3D" id="mat_hide_dark"]
+albedo_color = Color(0.08, 0.07, 0.07, 1)
 
 [sub_resource type="StandardMaterial3D" id="mat_cabinet"]
 albedo_color = Color(0.36, 0.5, 0.48, 1)
@@ -132,9 +125,6 @@ emission_enabled = true
 emission = Color(0.92, 0.96, 1, 1)
 emission_energy_multiplier = 3.0
 
-[sub_resource type="StandardMaterial3D" id="mat_mattress"]
-albedo_color = Color(0.93, 0.93, 0.9, 1)
-
 [sub_resource type="StandardMaterial3D" id="mat_blanket"]
 albedo_color = Color(0.25, 0.35, 0.65, 1)
 
@@ -152,6 +142,9 @@ albedo_color = Color(0.2, 0.2, 0.22, 1)
 
 [sub_resource type="StandardMaterial3D" id="mat_fence"]
 albedo_color = Color(0.62, 0.45, 0.28, 1)
+
+[sub_resource type="StandardMaterial3D" id="mat_wood_dark"]
+albedo_color = Color(0.33, 0.21, 0.12, 1)
 
 [sub_resource type="StandardMaterial3D" id="mat_bush"]
 albedo_color = Color(0.13, 0.33, 0.14, 1)
@@ -211,10 +204,6 @@ size = Vector3(2.2, 1.1, 2.75)
 
 [sub_resource type="BoxShape3D" id="hide_Arbusto"]
 size = Vector3(2.05, 1.05, 2)
-
-[sub_resource type="StandardMaterial3D" id="mat_invisible"]
-transparency = 1
-albedo_color = Color(1, 1, 1, 0)
 
 [node name="House" type="Node3D" unique_id=1513367849]
 script = ExtResource("house_script")
@@ -327,10 +316,13 @@ material = SubResource("mat_wall")
 
 [node name="PortaQuarto" type="CSGBox3D" parent="Estrutura" unique_id=100373993]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 4.2, -3)
+cast_shadow = 0
 use_collision = true
 size = Vector3(4, 8.4, 0.4)
 material = SubResource("mat_invisible")
-cast_shadow = 0
+
+[node name="Porta" parent="Estrutura/PortaQuarto" unique_id=1654382199 instance=ExtResource("furn_Door3")]
+transform = Transform3D(2.5828, 0, 0, 0, 2.6786, 0, 0, 0, 1.2121, 0.0114, -4.2375, -0.0061)
 
 [node name="Teto" type="CSGBox3D" parent="Estrutura" unique_id=409895142]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 12.2, 0)
@@ -347,10 +339,10 @@ material = SubResource("mat_rug")
 
 [node name="SofaAssento" type="CSGBox3D" parent="Sala" unique_id=1565064584]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17, 0.85, 6)
+cast_shadow = 0
 use_collision = true
 size = Vector3(3.5, 1.7, 10)
 material = SubResource("mat_invisible")
-cast_shadow = 0
 
 [node name="Vao" type="CSGBox3D" parent="Sala/SofaAssento" unique_id=1057610332]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.1, -0.35, 3)
@@ -360,24 +352,24 @@ material = SubResource("mat_invisible")
 
 [node name="SofaEncosto" type="CSGBox3D" parent="Sala" unique_id=701120052]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.25, 1.9, 6)
+cast_shadow = 0
 use_collision = true
 size = Vector3(1, 3.8, 10)
 material = SubResource("mat_invisible")
-cast_shadow = 0
 
 [node name="SofaBracoNorte" type="CSGBox3D" parent="Sala" unique_id=1596300390]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17.5, 1.3, 0.5)
+cast_shadow = 0
 use_collision = true
 size = Vector3(4.5, 2.6, 1)
 material = SubResource("mat_invisible")
-cast_shadow = 0
 
 [node name="SofaBracoSul" type="CSGBox3D" parent="Sala" unique_id=933714675]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17.5, 1.3, 11.5)
+cast_shadow = 0
 use_collision = true
 size = Vector3(4.5, 2.6, 1)
 material = SubResource("mat_invisible")
-cast_shadow = 0
 
 [node name="Pufe" type="CSGBox3D" parent="Sala" unique_id=1700298198]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.75, 0.75, 5.75)
@@ -387,31 +379,31 @@ material = SubResource("mat_sofa")
 
 [node name="Aparador" type="CSGBox3D" parent="Sala" unique_id=1125389865]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18.5, 2.6, -1.675)
+cast_shadow = 0
 use_collision = true
 size = Vector3(2.5, 5.2, 2.15)
 material = SubResource("mat_invisible")
-cast_shadow = 0
 
 [node name="Estante" type="CSGBox3D" parent="Sala" unique_id=1113200752]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.125, 3.4, -2)
+cast_shadow = 0
 use_collision = true
 size = Vector3(4.25, 6.8, 1.5)
 material = SubResource("mat_invisible")
-cast_shadow = 0
 
 [node name="MesaCentroTampo" type="CSGBox3D" parent="Sala" unique_id=455950114]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.5, 1.45, 10.25)
+cast_shadow = 0
 use_collision = true
 size = Vector3(4, 0.3, 4.5)
 material = SubResource("mat_invisible")
-cast_shadow = 0
 
 [node name="RackTV" type="CSGBox3D" parent="Sala" unique_id=107388526]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 11.75)
+cast_shadow = 0
 use_collision = true
 size = Vector3(1.5, 2, 4.5)
 material = SubResource("mat_invisible")
-cast_shadow = 0
 
 [node name="TV" type="CSGBox3D" parent="Sala" unique_id=656714899]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.475, 3.5, 11.75)
@@ -477,94 +469,94 @@ material = SubResource("mat_hide_dark")
 
 [node name="MesaJantarTampo" type="CSGBox3D" parent="Cozinha" unique_id=1398166847]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11, 2.85, 8)
+cast_shadow = 0
 use_collision = true
 size = Vector3(7, 0.3, 4.5)
 material = SubResource("mat_invisible")
-cast_shadow = 0
 
 [node name="CadeiraOesteTampo" type="CSGBox3D" parent="Cozinha" unique_id=2113217727]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 1.65, 8)
+cast_shadow = 0
 use_collision = true
 size = Vector3(2, 0.3, 2)
 material = SubResource("mat_invisible")
-cast_shadow = 0
 
 [node name="CadeiraOestePe1" type="CSGBox3D" parent="Cozinha" unique_id=1305205567]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.15, 0.75, 7.15)
+cast_shadow = 0
 use_collision = true
 size = Vector3(0.3, 1.5, 0.3)
 material = SubResource("mat_invisible")
-cast_shadow = 0
 
 [node name="CadeiraOestePe2" type="CSGBox3D" parent="Cozinha" unique_id=772509465]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.15, 0.75, 8.85)
+cast_shadow = 0
 use_collision = true
 size = Vector3(0.3, 1.5, 0.3)
 material = SubResource("mat_invisible")
-cast_shadow = 0
 
 [node name="CadeiraOestePe3" type="CSGBox3D" parent="Cozinha" unique_id=863580234]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.85, 0.75, 7.15)
+cast_shadow = 0
 use_collision = true
 size = Vector3(0.3, 1.5, 0.3)
 material = SubResource("mat_invisible")
-cast_shadow = 0
 
 [node name="CadeiraOestePe4" type="CSGBox3D" parent="Cozinha" unique_id=1070476175]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.85, 0.75, 8.85)
+cast_shadow = 0
 use_collision = true
 size = Vector3(0.3, 1.5, 0.3)
 material = SubResource("mat_invisible")
-cast_shadow = 0
 
 [node name="CadeiraOesteEncosto" type="CSGBox3D" parent="Cozinha" unique_id=1350999412]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.15, 2.9, 8)
+cast_shadow = 0
 use_collision = true
 size = Vector3(0.3, 2.2, 2)
 material = SubResource("mat_invisible")
-cast_shadow = 0
 
 [node name="CadeiraLesteTampo" type="CSGBox3D" parent="Cozinha" unique_id=2062514765]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 1.65, 8)
+cast_shadow = 0
 use_collision = true
 size = Vector3(2, 0.3, 2)
 material = SubResource("mat_invisible")
-cast_shadow = 0
 
 [node name="CadeiraLestePe1" type="CSGBox3D" parent="Cozinha" unique_id=301895862]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.15, 0.75, 7.15)
+cast_shadow = 0
 use_collision = true
 size = Vector3(0.3, 1.5, 0.3)
 material = SubResource("mat_invisible")
-cast_shadow = 0
 
 [node name="CadeiraLestePe2" type="CSGBox3D" parent="Cozinha" unique_id=406731235]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.15, 0.75, 8.85)
+cast_shadow = 0
 use_collision = true
 size = Vector3(0.3, 1.5, 0.3)
 material = SubResource("mat_invisible")
-cast_shadow = 0
 
 [node name="CadeiraLestePe3" type="CSGBox3D" parent="Cozinha" unique_id=1047526143]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.85, 0.75, 7.15)
+cast_shadow = 0
 use_collision = true
 size = Vector3(0.3, 1.5, 0.3)
 material = SubResource("mat_invisible")
-cast_shadow = 0
 
 [node name="CadeiraLestePe4" type="CSGBox3D" parent="Cozinha" unique_id=198079375]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.85, 0.75, 8.85)
+cast_shadow = 0
 use_collision = true
 size = Vector3(0.3, 1.5, 0.3)
 material = SubResource("mat_invisible")
-cast_shadow = 0
 
 [node name="CadeiraLesteEncosto" type="CSGBox3D" parent="Cozinha" unique_id=120004459]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.85, 2.9, 8)
+cast_shadow = 0
 use_collision = true
 size = Vector3(0.3, 2.2, 2)
 material = SubResource("mat_invisible")
-cast_shadow = 0
 
 [node name="BancadaNorteBase" type="CSGBox3D" parent="Cozinha" unique_id=1031210258]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.5, 1.7, -13.5)
@@ -604,10 +596,10 @@ material = SubResource("mat_fridge")
 
 [node name="Banquinho" type="CSGBox3D" parent="Cozinha" unique_id=208678902]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.8, 1.1, -9.2)
+cast_shadow = 0
 use_collision = true
 size = Vector3(1.6, 2.2, 1.6)
 material = SubResource("mat_invisible")
-cast_shadow = 0
 
 [node name="Lixeira" type="CSGBox3D" parent="Cozinha" unique_id=355274625]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.7, 0.9, -10.9)
@@ -666,10 +658,10 @@ material = SubResource("mat_rug")
 
 [node name="CamaBase" type="CSGBox3D" parent="Quarto" unique_id=201492723]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.25, 0.6, -10.5)
+cast_shadow = 0
 use_collision = true
 size = Vector3(9.5, 1.2, 8)
 material = SubResource("mat_invisible")
-cast_shadow = 0
 
 [node name="Vao" type="CSGBox3D" parent="Quarto/CamaBase" unique_id=1537478490]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.75, -0.125, 2.025)
@@ -679,24 +671,24 @@ material = SubResource("mat_invisible")
 
 [node name="CamaColchao" type="CSGBox3D" parent="Quarto" unique_id=731383883]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.25, 1.6, -10.5)
+cast_shadow = 0
 use_collision = true
 size = Vector3(9.5, 0.8, 8)
 material = SubResource("mat_invisible")
-cast_shadow = 0
 
 [node name="CamaCabeceira" type="CSGBox3D" parent="Quarto" unique_id=2115357830]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.25, 2.25, -14.625)
+cast_shadow = 0
 use_collision = true
 size = Vector3(9.5, 4.5, 0.25)
 material = SubResource("mat_invisible")
-cast_shadow = 0
 
 [node name="Travesseiro" type="CSGBox3D" parent="Quarto" unique_id=1981716688]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.25, 2.25, -13.55)
+cast_shadow = 0
 use_collision = true
 size = Vector3(6.5, 0.5, 1.5)
 material = SubResource("mat_invisible")
-cast_shadow = 0
 
 [node name="DonoCoberto" type="CSGBox3D" parent="Quarto" unique_id=971386288]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.25, 2.55, -9.9)
@@ -722,17 +714,17 @@ outline_size = 24
 
 [node name="CriadoMudo" type="CSGBox3D" parent="Quarto" unique_id=1039397183]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.9, 1, -13.25)
+cast_shadow = 0
 use_collision = true
 size = Vector3(2.6, 2, 2.5)
 material = SubResource("mat_invisible")
-cast_shadow = 0
 
 [node name="GuardaRoupa" type="CSGBox3D" parent="Quarto" unique_id=552772288]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18.625, 3.25, -10.75)
+cast_shadow = 0
 use_collision = true
 size = Vector3(2.25, 6.5, 7.5)
 material = SubResource("mat_invisible")
-cast_shadow = 0
 
 [node name="Vao" type="CSGBox3D" parent="Quarto/GuardaRoupa" unique_id=126274750]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.15, -2.75, 0)
@@ -937,7 +929,7 @@ shape = SubResource("zone_Fuga")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 0.1, 0.5)
 
 [node name="Player" parent="." unique_id=2012664293 groups=["player"] instance=ExtResource("player")]
-transform = Transform3D(0.9993246, -0.036746014, 0, 0.036746014, 0.9993246, 0, 0, 0, 1, -7.4599066, 1.6503788, 24.660242)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.4599066, 1.6503788, 24.660242)
 
 [node name="Navegacao" type="NavigationRegion3D" parent="." unique_id=678570362]
 navigation_mesh = SubResource("nav_mesh")
@@ -969,126 +961,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 0, 1)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 0.1, -6)
 patrol_route = NodePath("../Patrulha")
 
-[node name="HUD" type="CanvasLayer" parent="." unique_id=1967944542]
+[node name="HUD" parent="." unique_id=962754131 instance=ExtResource("hud")]
 
-[node name="Tasks" type="Label" parent="HUD" unique_id=820653806]
-offset_left = 24.0
-offset_top = 20.0
-offset_right = 760.0
-offset_bottom = 200.0
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 8
-theme_override_font_sizes/font_size = 20
-
-[node name="Message" type="Label" parent="HUD" unique_id=975028999]
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -480.0
-offset_top = -210.0
-offset_right = 480.0
-offset_bottom = -130.0
-grow_horizontal = 2
-grow_vertical = 0
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 8
-theme_override_font_sizes/font_size = 24
-horizontal_alignment = 1
-vertical_alignment = 2
-autowrap_mode = 3
-
-[node name="NoiseBar" type="ProgressBar" parent="HUD" unique_id=1945226269]
-visible = false
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -200.0
-offset_top = -80.0
-offset_right = 200.0
-offset_bottom = -52.0
-grow_horizontal = 2
-grow_vertical = 0
-max_value = 1.0
-show_percentage = false
-
-[node name="NoiseLabel" type="Label" parent="HUD/NoiseBar" unique_id=893647072]
-layout_mode = 0
-offset_top = -30.0
-offset_right = 400.0
-offset_bottom = -4.0
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 8
-text = "Barulho"
-horizontal_alignment = 1
-
-[node name="WinPanel" type="ColorRect" parent="HUD" unique_id=1505682773]
-visible = false
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0, 0, 0, 0.75)
-
-[node name="WinText" type="Label" parent="HUD/WinPanel" unique_id=1301152745]
-layout_mode = 0
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_font_sizes/font_size = 40
-text = "Você fugiu!
-
-O pinscher está livre.
-
-Aperte Enter para jogar de novo."
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="LosePanel" type="ColorRect" parent="HUD" unique_id=1201135198]
-visible = false
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0.25, 0, 0, 0.75)
-
-[node name="LoseText" type="Label" parent="HUD/LosePanel" unique_id=1613114040]
-layout_mode = 0
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_font_sizes/font_size = 40
-text = "Você foi pego!
-
-Aperte Enter para tentar de novo."
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="HiddenLabel" type="Label" parent="HUD" unique_id=190868189]
-visible = false
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -200.0
-offset_top = 20.0
-offset_right = 200.0
-offset_bottom = 60.0
-grow_horizontal = 2
-theme_override_colors/font_color = Color(0.5, 1, 0.6, 1)
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 8
-theme_override_font_sizes/font_size = 26
-text = "ESCONDIDO"
-horizontal_alignment = 1
-
-[node name="PauseMenu" parent="." instance=ExtResource("pause_menu")]
+[node name="PauseMenu" parent="." unique_id=4989950 instance=ExtResource("pause_menu")]
 
 [node name="Esconderijos" type="Node3D" parent="." unique_id=1829164281]
 
@@ -1188,50 +1063,47 @@ light_color = Color(0.4, 1, 0.5, 1)
 light_energy = 0.5
 omni_range = 2.5
 
-[node name="Moveis" type="Node3D" parent="."]
+[node name="Moveis" type="Node3D" parent="." unique_id=1918436718]
 
-[node name="Sofa" parent="Moveis" instance=ExtResource("furn_Sofa")]
+[node name="Sofa" parent="Moveis" unique_id=251357502 instance=ExtResource("furn_Sofa")]
 transform = Transform3D(0, 0, 2.5281, 0, 2.5166, 0, -2.8302, 0, 0, -17.4747, 0.0252, 6)
 
-[node name="Aparador" parent="Moveis" instance=ExtResource("furn_ShortCloset")]
+[node name="Aparador" parent="Moveis" unique_id=1359011659 instance=ExtResource("furn_ShortCloset")]
 transform = Transform3D(1.6026, 0, 0, 0, 2.2907, 0, 0, 0, 2.3652, -18.5, 0.0229, -1.7353)
 
-[node name="Estante" parent="Moveis" instance=ExtResource("furn_Bookcase_Books")]
+[node name="Estante" parent="Moveis" unique_id=1417503129 instance=ExtResource("furn_Bookcase_Books")]
 transform = Transform3D(2.3098, 0, 0, 0, 2.0178, 0, 0, 0, 2.2388, -15.1342, 0.0404, -2.1007)
 
-[node name="MesaCentro" parent="Moveis" instance=ExtResource("furn_Table2")]
+[node name="MesaCentro" parent="Moveis" unique_id=1649655007 instance=ExtResource("furn_Table2")]
 transform = Transform3D(2.8169, 0, 0, 0, 1.9277, 0, 0, 0, 1.6187, -8.5, 0, 10.25)
 
-[node name="RackTV" parent="Moveis" instance=ExtResource("furn_Desk")]
+[node name="RackTV" parent="Moveis" unique_id=881668762 instance=ExtResource("furn_Desk")]
 transform = Transform3D(0, 0, -1.7857, 0, 2.1739, 0, 2.4725, 0, 0, 0.9464, 0, 11.75)
 
-[node name="MesaJantar" parent="Moveis" instance=ExtResource("furn_Table")]
+[node name="MesaJantar" parent="Moveis" unique_id=1251847483 instance=ExtResource("furn_Table")]
 transform = Transform3D(0, 0, 2.518, 0, 3.6145, 0, -3.169, 0, 0, 11, 0, 8)
 
-[node name="CadeiraOeste" parent="Moveis" instance=ExtResource("furn_Chair")]
+[node name="CadeiraOeste" parent="Moveis" unique_id=1711024375 instance=ExtResource("furn_Chair")]
 transform = Transform3D(0, 0, 3.125, 0, 3.1589, 0, -4, 0, 0, 6.1562, 0.0316, 8)
 
-[node name="CadeiraLeste" parent="Moveis" instance=ExtResource("furn_Chair")]
+[node name="CadeiraLeste" parent="Moveis" unique_id=410238074 instance=ExtResource("furn_Chair")]
 transform = Transform3D(0, 0, -3.125, 0, 3.1589, 0, 4, 0, 0, 15.8438, 0.0316, 8)
 
-[node name="Banquinho" parent="Moveis" instance=ExtResource("furn_Stool")]
+[node name="Banquinho" parent="Moveis" unique_id=816585352 instance=ExtResource("furn_Stool")]
 transform = Transform3D(3.2, 0, 0, 0, 3.7931, 0, 0, 0, 2.963, 12.8, 0.0379, -9.2)
 
-[node name="Cama" parent="Moveis" instance=ExtResource("furn_BedDouble")]
+[node name="Cama" parent="Moveis" unique_id=144399309 instance=ExtResource("furn_BedDouble")]
 transform = Transform3D(3.3676, 0, 0, 0, 2.859, 0, 0, 0, 1.9366, -0.854, 0.0429, -11.9903)
 
-[node name="CriadoMudo" parent="Moveis" instance=ExtResource("furn_NightStand")]
+[node name="CriadoMudo" parent="Moveis" unique_id=543268429 instance=ExtResource("furn_NightStand")]
 transform = Transform3D(4.4828, 0, 0, 0, 3.9216, 0, 0, 0, 5, -9.9, 0, -13.25)
 
-[node name="GuardaRoupaA" parent="Moveis" instance=ExtResource("furn_Closet")]
+[node name="GuardaRoupaA" parent="Moveis" unique_id=1161052702 instance=ExtResource("furn_Closet")]
 transform = Transform3D(0, 0, 2.5952, 0, 2.1812, 0, -2.4038, 0, 0, -18.6367, 0.0218, -12.6274)
 
-[node name="GuardaRoupaB" parent="Moveis" instance=ExtResource("furn_Closet")]
+[node name="GuardaRoupaB" parent="Moveis" unique_id=839818665 instance=ExtResource("furn_Closet")]
 transform = Transform3D(0, 0, 2.5952, 0, 2.1812, 0, -2.4038, 0, 0, -18.6367, 0.0218, -8.8774)
 
-[node name="Porta" parent="Estrutura/PortaQuarto" instance=ExtResource("furn_Door3")]
-transform = Transform3D(2.5828, 0, 0, 0, 2.6786, 0, 0, 0, 1.2121, 0.0114, -4.2375, -0.0061)
+[node name="InventoryScreen" parent="." unique_id=96501997 instance=ExtResource("inventory_screen")]
 
-[node name="InventoryScreen" parent="." instance=ExtResource("inventory_screen")]
-
-[node name="MapScreen" parent="." instance=ExtResource("map_screen")]
+[node name="MapScreen" parent="." unique_id=1494271276 instance=ExtResource("map_screen")]

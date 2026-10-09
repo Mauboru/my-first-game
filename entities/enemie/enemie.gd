@@ -213,10 +213,17 @@ func is_player_hit() -> bool:
 	return to_player.length() < hit_range and can_reach(player) and facing().angle_to(to_player) < PI / 3.0
 
 func catch_player() -> void:
+	player_caught.emit()
+
+# Where the player's focus aims at
+func get_focus_point() -> Vector3:
+	return global_position + Vector3.UP * EYE_HEIGHT * model.scale.y * 0.75
+
+# Freezes the enemy, for when the game is over
+func stop() -> void:
 	velocity = Vector3.ZERO
 	set_physics_process(false)
 	anim_player.queue("idle")
-	player_caught.emit()
 
 # The player is out of reach when standing on top of tall furniture
 func can_reach(body: Node3D) -> bool:
