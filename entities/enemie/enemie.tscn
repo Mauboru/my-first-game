@@ -1,0 +1,34 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://entities/enemie/enemie.gd" id="1_script"]
+[ext_resource type="PackedScene" uid="uid://b1bcpswkm1rwp" path="res://entities/enemie/model/character.fbx" id="2_model"]
+[ext_resource type="Script" path="res://entities/footsteps.gd" id="3_steps"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_body"]
+radius = 1.0
+height = 6.8
+
+[node name="Enemie" type="CharacterBody3D" groups=["enemies"]]
+script = ExtResource("1_script")
+
+[node name="Model" parent="." instance=ExtResource("2_model")]
+transform = Transform3D(3.5, 0, 0, 0, 3.5, 0, 0, 0, 3.5, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.4, 0)
+shape = SubResource("CapsuleShape3D_body")
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+path_desired_distance = 1.0
+target_desired_distance = 1.0
+
+[node name="Passos" type="AudioStreamPlayer3D" parent="."]
+volume_db = -8.0
+unit_size = 20.0
+script = ExtResource("3_steps")
+stride = 2.6
+pitch_variation = 0.05
+
+[node name="Voz" type="AudioStreamPlayer3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.6, 0)
+unit_size = 20.0

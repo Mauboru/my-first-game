@@ -1,0 +1,1237 @@
+[gd_scene format=3 uid="uid://bitw38fwmyuo3"]
+
+[ext_resource type="AudioStream" uid="uid://b61ebvu4i1l8l" path="res://assets/audio/ambience.mp3" id="ambience"]
+[ext_resource type="Texture2D" uid="uid://cd0frvvwkyw22" path="res://assets/sprites/chicken.png" id="chicken_tex"]
+[ext_resource type="PackedScene" path="res://entities/enemie/enemie.tscn" id="enemie"]
+[ext_resource type="Texture2D" uid="uid://bc68tbqeq0kgk" path="res://assets/textures/floor.jpg" id="floor_tex"]
+[ext_resource type="Texture2D" uid="uid://8plcv04j21wa" path="res://assets/textures/floor_wooden.jpg" id="floor_wooden_tex"]
+[ext_resource type="Texture2D" uid="uid://cy3e80yecvnq3" path="res://assets/textures/grass.jpg" id="grass_tex"]
+[ext_resource type="Script" uid="uid://cjodc4tc7kq47" path="res://levels/house/hide_spot.gd" id="hide_script"]
+[ext_resource type="Script" uid="uid://j0h2nmb27ylh" path="res://levels/house/house.gd" id="house_script"]
+[ext_resource type="Texture2D" uid="uid://phoq8andv05k" path="res://assets/sprites/mom.png" id="mom_tex"]
+[ext_resource type="Texture2D" uid="uid://cmbh5nvx1knae" path="res://assets/sky/moon.png" id="moon_tex"]
+[ext_resource type="PackedScene" path="res://ui/pause_menu.tscn" id="pause_menu"]
+[ext_resource type="Script" uid="uid://bvgecexwq01nw" path="res://levels/house/pickup.gd" id="pickup_script"]
+[ext_resource type="PackedScene" uid="uid://dgkyklooaehx8" path="res://entities/player/player.tscn" id="player"]
+[ext_resource type="Shader" uid="uid://q3bvt0n6ptk8" path="res://levels/house/night_sky.gdshader" id="sky_shader"]
+[ext_resource type="Texture2D" uid="uid://dj1tkpofrgnik" path="res://assets/sky/sky.png" id="sky_tex"]
+[ext_resource type="PackedScene" uid="uid://8odbx04rh004" path="res://assets/furniture/BedDouble.fbx" id="furn_BedDouble"]
+[ext_resource type="PackedScene" uid="uid://ogcbdhhsf3sx" path="res://assets/furniture/Bookcase_Books.fbx" id="furn_Bookcase_Books"]
+[ext_resource type="PackedScene" uid="uid://burelcnsbadsf" path="res://assets/furniture/Chair.fbx" id="furn_Chair"]
+[ext_resource type="PackedScene" uid="uid://ddu6hdwakqjts" path="res://assets/furniture/Closet.fbx" id="furn_Closet"]
+[ext_resource type="PackedScene" uid="uid://ssjkru662o5u" path="res://assets/furniture/Desk.fbx" id="furn_Desk"]
+[ext_resource type="PackedScene" uid="uid://oxq1q1s5n3pf" path="res://assets/furniture/Door3.fbx" id="furn_Door3"]
+[ext_resource type="PackedScene" uid="uid://odwobfywhrc4" path="res://assets/furniture/NightStand.fbx" id="furn_NightStand"]
+[ext_resource type="PackedScene" uid="uid://cjdbcuk7xr8ut" path="res://assets/furniture/ShortCloset.fbx" id="furn_ShortCloset"]
+[ext_resource type="PackedScene" uid="uid://bk58r3x6nthst" path="res://assets/furniture/Sofa.fbx" id="furn_Sofa"]
+[ext_resource type="PackedScene" uid="uid://qvwimhes3stf" path="res://assets/furniture/Stool.fbx" id="furn_Stool"]
+[ext_resource type="PackedScene" uid="uid://bphjwd3aya18" path="res://assets/furniture/Table.fbx" id="furn_Table"]
+[ext_resource type="PackedScene" uid="uid://c8ts0k2u8fc3v" path="res://assets/furniture/Table2.fbx" id="furn_Table2"]
+[ext_resource type="PackedScene" path="res://ui/inventory_screen.tscn" id="inventory_screen"]
+[ext_resource type="PackedScene" path="res://ui/map_screen.tscn" id="map_screen"]
+
+[sub_resource type="ShaderMaterial" id="sky_mat"]
+shader = ExtResource("sky_shader")
+shader_parameter/stars = ExtResource("sky_tex")
+shader_parameter/moon = ExtResource("moon_tex")
+shader_parameter/star_axis = Vector3(0.3, 1, 0.2)
+shader_parameter/star_speed = 0.01
+shader_parameter/star_tiling = 1.5
+shader_parameter/star_brightness = 1.0
+shader_parameter/moon_size = 0.12
+shader_parameter/moon_brightness = 1.5
+
+[sub_resource type="Sky" id="sky"]
+sky_material = SubResource("sky_mat")
+
+[sub_resource type="Environment" id="env"]
+background_mode = 2
+sky = SubResource("sky")
+ambient_light_source = 2
+ambient_light_color = Color(0.5, 0.56, 0.75, 1)
+ambient_light_energy = 0.25
+tonemap_mode = 2
+ssao_enabled = true
+glow_enabled = true
+
+[sub_resource type="StandardMaterial3D" id="mat_wood_floor"]
+albedo_texture = ExtResource("floor_wooden_tex")
+uv1_scale = Vector3(0.125, 1, 0.167)
+uv1_triplanar = true
+uv1_world_triplanar = true
+
+[sub_resource type="StandardMaterial3D" id="mat_tile"]
+albedo_texture = ExtResource("floor_tex")
+uv1_scale = Vector3(0.167, 1, 0.231)
+uv1_triplanar = true
+uv1_world_triplanar = true
+
+[sub_resource type="StandardMaterial3D" id="mat_wall"]
+albedo_color = Color(0.87, 0.82, 0.72, 1)
+
+[sub_resource type="StandardMaterial3D" id="mat_door"]
+albedo_color = Color(0.45, 0.28, 0.15, 1)
+
+[sub_resource type="StandardMaterial3D" id="mat_ceiling"]
+albedo_color = Color(0.92, 0.91, 0.88, 1)
+
+[sub_resource type="StandardMaterial3D" id="mat_rug"]
+albedo_color = Color(0.7, 0.3, 0.28, 1)
+
+[sub_resource type="StandardMaterial3D" id="mat_sofa"]
+albedo_color = Color(0.3, 0.45, 0.6, 1)
+
+[sub_resource type="StandardMaterial3D" id="mat_hide_dark"]
+albedo_color = Color(0.08, 0.07, 0.07, 1)
+
+[sub_resource type="StandardMaterial3D" id="mat_sofa_dark"]
+albedo_color = Color(0.24, 0.36, 0.5, 1)
+
+[sub_resource type="StandardMaterial3D" id="mat_wood"]
+albedo_color = Color(0.5, 0.33, 0.18, 1)
+
+[sub_resource type="StandardMaterial3D" id="mat_wood_dark"]
+albedo_color = Color(0.33, 0.21, 0.12, 1)
+
+[sub_resource type="StandardMaterial3D" id="mat_black"]
+albedo_color = Color(0.06, 0.06, 0.07, 1)
+
+[sub_resource type="StandardMaterial3D" id="mat_tv_on"]
+albedo_color = Color(0.35, 0.55, 0.95, 1)
+emission_enabled = true
+emission = Color(0.35, 0.55, 0.95, 1)
+emission_energy_multiplier = 1.5
+
+[sub_resource type="StandardMaterial3D" id="mat_lamp_warm"]
+albedo_color = Color(1, 0.86, 0.6, 1)
+emission_enabled = true
+emission = Color(1, 0.86, 0.6, 1)
+emission_energy_multiplier = 3.0
+
+[sub_resource type="StandardMaterial3D" id="mat_cardboard"]
+albedo_color = Color(0.72, 0.56, 0.38, 1)
+
+[sub_resource type="StandardMaterial3D" id="mat_cabinet"]
+albedo_color = Color(0.36, 0.5, 0.48, 1)
+
+[sub_resource type="StandardMaterial3D" id="mat_counter"]
+albedo_color = Color(0.92, 0.92, 0.9, 1)
+
+[sub_resource type="StandardMaterial3D" id="mat_fridge"]
+albedo_color = Color(0.8, 0.83, 0.86, 1)
+
+[sub_resource type="StandardMaterial3D" id="mat_metal"]
+albedo_color = Color(0.55, 0.57, 0.6, 1)
+
+[sub_resource type="StandardMaterial3D" id="mat_red"]
+albedo_color = Color(0.75, 0.15, 0.12, 1)
+
+[sub_resource type="StandardMaterial3D" id="mat_lamp_cool"]
+albedo_color = Color(0.92, 0.96, 1, 1)
+emission_enabled = true
+emission = Color(0.92, 0.96, 1, 1)
+emission_energy_multiplier = 3.0
+
+[sub_resource type="StandardMaterial3D" id="mat_mattress"]
+albedo_color = Color(0.93, 0.93, 0.9, 1)
+
+[sub_resource type="StandardMaterial3D" id="mat_blanket"]
+albedo_color = Color(0.25, 0.35, 0.65, 1)
+
+[sub_resource type="StandardMaterial3D" id="mat_lamp_off"]
+albedo_color = Color(0.35, 0.35, 0.38, 1)
+
+[sub_resource type="StandardMaterial3D" id="mat_grass"]
+albedo_texture = ExtResource("grass_tex")
+uv1_scale = Vector3(0.111, 1, 0.167)
+uv1_triplanar = true
+uv1_world_triplanar = true
+
+[sub_resource type="StandardMaterial3D" id="mat_asphalt"]
+albedo_color = Color(0.2, 0.2, 0.22, 1)
+
+[sub_resource type="StandardMaterial3D" id="mat_fence"]
+albedo_color = Color(0.62, 0.45, 0.28, 1)
+
+[sub_resource type="StandardMaterial3D" id="mat_bush"]
+albedo_color = Color(0.13, 0.33, 0.14, 1)
+
+[sub_resource type="SphereShape3D" id="pickup_shape"]
+radius = 1.3
+
+[sub_resource type="StandardMaterial3D" id="mat_ball"]
+albedo_color = Color(0.95, 0.2, 0.2, 1)
+emission_enabled = true
+emission = Color(0.95, 0.2, 0.2, 1)
+emission_energy_multiplier = 0.6
+
+[sub_resource type="StandardMaterial3D" id="mat_gold"]
+albedo_color = Color(1, 0.8, 0.15, 1)
+emission_enabled = true
+emission = Color(1, 0.8, 0.15, 1)
+emission_energy_multiplier = 0.6
+
+[sub_resource type="BoxShape3D" id="zone_QuartoBarulho"]
+size = Vector3(21, 10, 10.7)
+
+[sub_resource type="BoxShape3D" id="zone_Portao"]
+size = Vector3(8, 5, 3.2)
+
+[sub_resource type="BoxShape3D" id="zone_Fuga"]
+size = Vector3(16, 6, 3.5)
+
+[sub_resource type="NavigationMesh" id="nav_mesh"]
+geometry_parsed_geometry_type = 1
+geometry_source_geometry_mode = 1
+agent_height = 7.0
+agent_radius = 1.25
+region_min_size = 30.0
+filter_baking_aabb = AABB(-25, -1, -20, 50, 12, 60)
+
+[sub_resource type="BoxShape3D" id="hide_DebaixoDoSofa"]
+size = Vector3(2.7, 1.05, 2.6)
+
+[sub_resource type="BoxShape3D" id="hide_CaixaPapelao"]
+size = Vector3(1.85, 1.05, 2)
+
+[sub_resource type="BoxShape3D" id="hide_ArmarioBancada"]
+size = Vector3(2.4, 1.05, 1.6)
+
+[sub_resource type="BoxShape3D" id="hide_CaixaFeira"]
+size = Vector3(2, 1.05, 1.75)
+
+[sub_resource type="BoxShape3D" id="hide_DebaixoDaCama"]
+size = Vector3(2.8, 1, 3.35)
+
+[sub_resource type="BoxShape3D" id="hide_GuardaRoupa"]
+size = Vector3(1.35, 1.05, 2.3)
+
+[sub_resource type="BoxShape3D" id="hide_Casinha"]
+size = Vector3(2.2, 1.1, 2.75)
+
+[sub_resource type="BoxShape3D" id="hide_Arbusto"]
+size = Vector3(2.05, 1.05, 2)
+
+[sub_resource type="StandardMaterial3D" id="mat_invisible"]
+transparency = 1
+albedo_color = Color(1, 1, 1, 0)
+
+[node name="House" type="Node3D" unique_id=1513367849]
+script = ExtResource("house_script")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1825377821]
+environment = SubResource("env")
+
+[node name="Ambiente" type="AudioStreamPlayer" parent="." unique_id=1363773194]
+stream = ExtResource("ambience")
+volume_db = -10.0
+autoplay = true
+
+[node name="Lua" type="DirectionalLight3D" parent="." unique_id=2066115560]
+transform = Transform3D(0.866, -0.354, 0.354, 0, 0.707, 0.707, -0.5, -0.612, 0.612, 0, 20, 0)
+light_color = Color(0.7, 0.8, 1, 1)
+light_energy = 0.25
+shadow_enabled = true
+
+[node name="Estrutura" type="Node3D" parent="." unique_id=797834788 groups=["navigation_mesh_source_group"]]
+
+[node name="PisoSala" type="CSGBox3D" parent="Estrutura" unique_id=1443419568]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, -0.25, 6)
+use_collision = true
+size = Vector3(22, 0.5, 18)
+material = SubResource("mat_wood_floor")
+
+[node name="PisoCozinha" type="CSGBox3D" parent="Estrutura" unique_id=1768097929]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11, -0.25, 0)
+use_collision = true
+size = Vector3(18, 0.5, 30)
+material = SubResource("mat_tile")
+
+[node name="PisoQuarto" type="CSGBox3D" parent="Estrutura" unique_id=880844765]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, -0.25, -9)
+use_collision = true
+size = Vector3(22, 0.5, 12)
+material = SubResource("mat_wood_floor")
+
+[node name="ParedeOeste" type="CSGBox3D" parent="Estrutura" unique_id=1404274515]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 6, 0)
+use_collision = true
+size = Vector3(0.5, 12, 30)
+material = SubResource("mat_wall")
+
+[node name="ParedeLeste" type="CSGBox3D" parent="Estrutura" unique_id=486395044]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 6, 0)
+use_collision = true
+size = Vector3(0.5, 12, 30)
+material = SubResource("mat_wall")
+
+[node name="ParedeNorte" type="CSGBox3D" parent="Estrutura" unique_id=2039484065]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6, -15)
+use_collision = true
+size = Vector3(40, 12, 0.5)
+material = SubResource("mat_wall")
+
+[node name="ParedeSulA" type="CSGBox3D" parent="Estrutura" unique_id=1895896705]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13, 6, 15)
+use_collision = true
+size = Vector3(14, 12, 0.5)
+material = SubResource("mat_wall")
+
+[node name="ParedeSulB" type="CSGBox3D" parent="Estrutura" unique_id=1506741850]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 6, 15)
+use_collision = true
+size = Vector3(22, 12, 0.5)
+material = SubResource("mat_wall")
+
+[node name="ParedeSulVerga" type="CSGBox3D" parent="Estrutura" unique_id=873900409]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 10.2, 15)
+use_collision = true
+size = Vector3(4, 3.6, 0.5)
+material = SubResource("mat_wall")
+
+[node name="ParedeMeioA" type="CSGBox3D" parent="Estrutura" unique_id=372705979]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 6, -5.5)
+use_collision = true
+size = Vector3(0.5, 12, 19)
+material = SubResource("mat_wall")
+
+[node name="ParedeMeioB" type="CSGBox3D" parent="Estrutura" unique_id=1478012090]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 6, 11.5)
+use_collision = true
+size = Vector3(0.5, 12, 7)
+material = SubResource("mat_wall")
+
+[node name="ParedeMeioVerga" type="CSGBox3D" parent="Estrutura" unique_id=163120106]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 10.2, 6)
+use_collision = true
+size = Vector3(0.5, 3.6, 4)
+material = SubResource("mat_wall")
+
+[node name="ParedeQuartoA" type="CSGBox3D" parent="Estrutura" unique_id=2137969219]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 6, -3)
+use_collision = true
+size = Vector3(8, 12, 0.5)
+material = SubResource("mat_wall")
+
+[node name="ParedeQuartoB" type="CSGBox3D" parent="Estrutura" unique_id=1146791091]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 6, -3)
+use_collision = true
+size = Vector3(10, 12, 0.5)
+material = SubResource("mat_wall")
+
+[node name="ParedeQuartoVerga" type="CSGBox3D" parent="Estrutura" unique_id=246948966]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 10.2, -3)
+use_collision = true
+size = Vector3(4, 3.6, 0.5)
+material = SubResource("mat_wall")
+
+[node name="PortaQuarto" type="CSGBox3D" parent="Estrutura" unique_id=100373993]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 4.2, -3)
+use_collision = true
+size = Vector3(4, 8.4, 0.4)
+material = SubResource("mat_invisible")
+cast_shadow = 0
+
+[node name="Teto" type="CSGBox3D" parent="Estrutura" unique_id=409895142]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 12.2, 0)
+use_collision = true
+size = Vector3(40.5, 0.4, 30.5)
+material = SubResource("mat_ceiling")
+
+[node name="Sala" type="Node3D" parent="." unique_id=2013324738 groups=["navigation_mesh_source_group"]]
+
+[node name="Tapete" type="CSGBox3D" parent="Sala" unique_id=764095730]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 0.02, 8)
+size = Vector3(10, 0.04, 10)
+material = SubResource("mat_rug")
+
+[node name="SofaAssento" type="CSGBox3D" parent="Sala" unique_id=1565064584]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17, 0.85, 6)
+use_collision = true
+size = Vector3(3.5, 1.7, 10)
+material = SubResource("mat_invisible")
+cast_shadow = 0
+
+[node name="Vao" type="CSGBox3D" parent="Sala/SofaAssento" unique_id=1057610332]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.1, -0.35, 3)
+operation = 2
+size = Vector3(3.4, 1.1, 2.8)
+material = SubResource("mat_invisible")
+
+[node name="SofaEncosto" type="CSGBox3D" parent="Sala" unique_id=701120052]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.25, 1.9, 6)
+use_collision = true
+size = Vector3(1, 3.8, 10)
+material = SubResource("mat_invisible")
+cast_shadow = 0
+
+[node name="SofaBracoNorte" type="CSGBox3D" parent="Sala" unique_id=1596300390]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17.5, 1.3, 0.5)
+use_collision = true
+size = Vector3(4.5, 2.6, 1)
+material = SubResource("mat_invisible")
+cast_shadow = 0
+
+[node name="SofaBracoSul" type="CSGBox3D" parent="Sala" unique_id=933714675]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17.5, 1.3, 11.5)
+use_collision = true
+size = Vector3(4.5, 2.6, 1)
+material = SubResource("mat_invisible")
+cast_shadow = 0
+
+[node name="Pufe" type="CSGBox3D" parent="Sala" unique_id=1700298198]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.75, 0.75, 5.75)
+use_collision = true
+size = Vector3(2.5, 1.5, 2.5)
+material = SubResource("mat_sofa")
+
+[node name="Aparador" type="CSGBox3D" parent="Sala" unique_id=1125389865]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18.5, 2.6, -1.675)
+use_collision = true
+size = Vector3(2.5, 5.2, 2.15)
+material = SubResource("mat_invisible")
+cast_shadow = 0
+
+[node name="Estante" type="CSGBox3D" parent="Sala" unique_id=1113200752]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.125, 3.4, -2)
+use_collision = true
+size = Vector3(4.25, 6.8, 1.5)
+material = SubResource("mat_invisible")
+cast_shadow = 0
+
+[node name="MesaCentroTampo" type="CSGBox3D" parent="Sala" unique_id=455950114]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.5, 1.45, 10.25)
+use_collision = true
+size = Vector3(4, 0.3, 4.5)
+material = SubResource("mat_invisible")
+cast_shadow = 0
+
+[node name="RackTV" type="CSGBox3D" parent="Sala" unique_id=107388526]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 11.75)
+use_collision = true
+size = Vector3(1.5, 2, 4.5)
+material = SubResource("mat_invisible")
+cast_shadow = 0
+
+[node name="TV" type="CSGBox3D" parent="Sala" unique_id=656714899]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.475, 3.5, 11.75)
+use_collision = true
+size = Vector3(0.25, 3, 3.5)
+material = SubResource("mat_black")
+
+[node name="TVTela" type="CSGBox3D" parent="Sala" unique_id=552008613]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.325, 3.5, 11.75)
+size = Vector3(0.05, 2.6, 3.1)
+material = SubResource("mat_tv_on")
+
+[node name="LustreSala" type="CSGBox3D" parent="Sala" unique_id=1336338101]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 11.85, 6)
+size = Vector3(2.4, 0.3, 2.4)
+material = SubResource("mat_lamp_warm")
+
+[node name="LustreSalaLuz" type="OmniLight3D" parent="Sala" unique_id=860550393]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 11, 6)
+light_color = Color(1, 0.84, 0.62, 1)
+light_energy = 6.0
+shadow_enabled = true
+omni_range = 28.0
+
+[node name="AbajurHaste" type="CSGBox3D" parent="Sala" unique_id=479911428]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18.6, 2.5, 13.6)
+use_collision = true
+size = Vector3(0.24, 5, 0.24)
+material = SubResource("mat_black")
+
+[node name="AbajurCupula" type="CSGBox3D" parent="Sala" unique_id=1302961756]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18.6, 5.5, 13.6)
+size = Vector3(1.2, 1, 1.2)
+material = SubResource("mat_lamp_warm")
+
+[node name="AbajurLuz" type="OmniLight3D" parent="Sala" unique_id=1365265056]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18.6, 4.5, 13.6)
+light_color = Color(1, 0.84, 0.62, 1)
+light_energy = 3.0
+shadow_enabled = true
+omni_range = 12.0
+
+[node name="BrilhoTV" type="OmniLight3D" parent="Sala" unique_id=1234117854]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 3.5, 11.75)
+light_color = Color(0.4, 0.6, 1, 1)
+light_energy = 1.5
+shadow_enabled = true
+omni_range = 10.0
+
+[node name="CaixaPapelao" type="CSGBox3D" parent="Sala" unique_id=1558192863]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.15, 0.7, -1.2)
+use_collision = true
+size = Vector3(2.7, 1.4, 2.6)
+material = SubResource("mat_cardboard")
+
+[node name="Vao" type="CSGBox3D" parent="Sala/CaixaPapelao" unique_id=222676156]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.125, -0.2, 0)
+operation = 2
+size = Vector3(2.55, 1.1, 2.2)
+material = SubResource("mat_hide_dark")
+
+[node name="Cozinha" type="Node3D" parent="." unique_id=1643908570 groups=["navigation_mesh_source_group"]]
+
+[node name="MesaJantarTampo" type="CSGBox3D" parent="Cozinha" unique_id=1398166847]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11, 2.85, 8)
+use_collision = true
+size = Vector3(7, 0.3, 4.5)
+material = SubResource("mat_invisible")
+cast_shadow = 0
+
+[node name="CadeiraOesteTampo" type="CSGBox3D" parent="Cozinha" unique_id=2113217727]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 1.65, 8)
+use_collision = true
+size = Vector3(2, 0.3, 2)
+material = SubResource("mat_invisible")
+cast_shadow = 0
+
+[node name="CadeiraOestePe1" type="CSGBox3D" parent="Cozinha" unique_id=1305205567]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.15, 0.75, 7.15)
+use_collision = true
+size = Vector3(0.3, 1.5, 0.3)
+material = SubResource("mat_invisible")
+cast_shadow = 0
+
+[node name="CadeiraOestePe2" type="CSGBox3D" parent="Cozinha" unique_id=772509465]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.15, 0.75, 8.85)
+use_collision = true
+size = Vector3(0.3, 1.5, 0.3)
+material = SubResource("mat_invisible")
+cast_shadow = 0
+
+[node name="CadeiraOestePe3" type="CSGBox3D" parent="Cozinha" unique_id=863580234]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.85, 0.75, 7.15)
+use_collision = true
+size = Vector3(0.3, 1.5, 0.3)
+material = SubResource("mat_invisible")
+cast_shadow = 0
+
+[node name="CadeiraOestePe4" type="CSGBox3D" parent="Cozinha" unique_id=1070476175]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.85, 0.75, 8.85)
+use_collision = true
+size = Vector3(0.3, 1.5, 0.3)
+material = SubResource("mat_invisible")
+cast_shadow = 0
+
+[node name="CadeiraOesteEncosto" type="CSGBox3D" parent="Cozinha" unique_id=1350999412]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.15, 2.9, 8)
+use_collision = true
+size = Vector3(0.3, 2.2, 2)
+material = SubResource("mat_invisible")
+cast_shadow = 0
+
+[node name="CadeiraLesteTampo" type="CSGBox3D" parent="Cozinha" unique_id=2062514765]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 1.65, 8)
+use_collision = true
+size = Vector3(2, 0.3, 2)
+material = SubResource("mat_invisible")
+cast_shadow = 0
+
+[node name="CadeiraLestePe1" type="CSGBox3D" parent="Cozinha" unique_id=301895862]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.15, 0.75, 7.15)
+use_collision = true
+size = Vector3(0.3, 1.5, 0.3)
+material = SubResource("mat_invisible")
+cast_shadow = 0
+
+[node name="CadeiraLestePe2" type="CSGBox3D" parent="Cozinha" unique_id=406731235]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.15, 0.75, 8.85)
+use_collision = true
+size = Vector3(0.3, 1.5, 0.3)
+material = SubResource("mat_invisible")
+cast_shadow = 0
+
+[node name="CadeiraLestePe3" type="CSGBox3D" parent="Cozinha" unique_id=1047526143]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.85, 0.75, 7.15)
+use_collision = true
+size = Vector3(0.3, 1.5, 0.3)
+material = SubResource("mat_invisible")
+cast_shadow = 0
+
+[node name="CadeiraLestePe4" type="CSGBox3D" parent="Cozinha" unique_id=198079375]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.85, 0.75, 8.85)
+use_collision = true
+size = Vector3(0.3, 1.5, 0.3)
+material = SubResource("mat_invisible")
+cast_shadow = 0
+
+[node name="CadeiraLesteEncosto" type="CSGBox3D" parent="Cozinha" unique_id=120004459]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.85, 2.9, 8)
+use_collision = true
+size = Vector3(0.3, 2.2, 2)
+material = SubResource("mat_invisible")
+cast_shadow = 0
+
+[node name="BancadaNorteBase" type="CSGBox3D" parent="Cozinha" unique_id=1031210258]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.5, 1.7, -13.5)
+use_collision = true
+size = Vector3(13, 3.4, 2.5)
+material = SubResource("mat_cabinet")
+
+[node name="Vao" type="CSGBox3D" parent="Cozinha/BancadaNorteBase" unique_id=1408321239]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.2, -1.2, 0.15)
+operation = 2
+size = Vector3(2.6, 1.1, 2.3)
+material = SubResource("mat_hide_dark")
+
+[node name="BancadaNorteTampo" type="CSGBox3D" parent="Cozinha" unique_id=150669452]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.5, 3.5, -13.4)
+use_collision = true
+size = Vector3(13, 0.2, 2.7)
+material = SubResource("mat_counter")
+
+[node name="BancadaLesteBase" type="CSGBox3D" parent="Cozinha" unique_id=1209968946]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.5, 1.7, -7.5)
+use_collision = true
+size = Vector3(2.5, 3.4, 9)
+material = SubResource("mat_cabinet")
+
+[node name="BancadaLesteTampo" type="CSGBox3D" parent="Cozinha" unique_id=1557260338]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.4, 3.5, -7.5)
+use_collision = true
+size = Vector3(2.7, 0.2, 9)
+material = SubResource("mat_counter")
+
+[node name="Geladeira" type="CSGBox3D" parent="Cozinha" unique_id=944710547]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.375, 3.4, -13.375)
+use_collision = true
+size = Vector3(2.75, 6.8, 2.75)
+material = SubResource("mat_fridge")
+
+[node name="Banquinho" type="CSGBox3D" parent="Cozinha" unique_id=208678902]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.8, 1.1, -9.2)
+use_collision = true
+size = Vector3(1.6, 2.2, 1.6)
+material = SubResource("mat_invisible")
+cast_shadow = 0
+
+[node name="Lixeira" type="CSGBox3D" parent="Cozinha" unique_id=355274625]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.7, 0.9, -10.9)
+use_collision = true
+size = Vector3(1.4, 1.8, 1.4)
+material = SubResource("mat_metal")
+
+[node name="PoteRacao" type="CSGBox3D" parent="Cozinha" unique_id=1213857565]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.25, 0.25, 12.25)
+use_collision = true
+size = Vector3(1.5, 0.5, 1.5)
+material = SubResource("mat_red")
+
+[node name="LampadaCozinhaNorte" type="CSGBox3D" parent="Cozinha" unique_id=899175862]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11, 11.85, -7)
+size = Vector3(2.4, 0.3, 2.4)
+material = SubResource("mat_lamp_cool")
+
+[node name="LampadaCozinhaNorteLuz" type="OmniLight3D" parent="Cozinha" unique_id=1598035356]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11, 11, -7)
+light_color = Color(0.9, 0.95, 1, 1)
+light_energy = 5.0
+shadow_enabled = true
+omni_range = 24.0
+
+[node name="LampadaCozinhaSul" type="CSGBox3D" parent="Cozinha" unique_id=174752649]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11, 11.85, 8)
+size = Vector3(2.4, 0.3, 2.4)
+material = SubResource("mat_lamp_cool")
+
+[node name="LampadaCozinhaSulLuz" type="OmniLight3D" parent="Cozinha" unique_id=297998804]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11, 11, 8)
+light_color = Color(0.9, 0.95, 1, 1)
+light_energy = 5.0
+shadow_enabled = true
+omni_range = 24.0
+
+[node name="CaixaFeira" type="CSGBox3D" parent="Cozinha" unique_id=151461083]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.2, 0.7, 13.2)
+use_collision = true
+size = Vector3(2.6, 1.4, 2.6)
+material = SubResource("mat_cardboard")
+
+[node name="Vao" type="CSGBox3D" parent="Cozinha/CaixaFeira" unique_id=1675296557]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.55271e-15, -0.2, -0.125)
+operation = 2
+size = Vector3(2.2, 1.1, 2.45)
+material = SubResource("mat_hide_dark")
+
+[node name="Quarto" type="Node3D" parent="." unique_id=1830139468 groups=["navigation_mesh_source_group"]]
+
+[node name="TapeteQuarto" type="CSGBox3D" parent="Quarto" unique_id=1237138061]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.5, 0.02, -8)
+size = Vector3(7, 0.04, 6)
+material = SubResource("mat_rug")
+
+[node name="CamaBase" type="CSGBox3D" parent="Quarto" unique_id=201492723]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.25, 0.6, -10.5)
+use_collision = true
+size = Vector3(9.5, 1.2, 8)
+material = SubResource("mat_invisible")
+cast_shadow = 0
+
+[node name="Vao" type="CSGBox3D" parent="Quarto/CamaBase" unique_id=1537478490]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.75, -0.125, 2.025)
+operation = 2
+size = Vector3(3, 1.05, 4.05)
+material = SubResource("mat_invisible")
+
+[node name="CamaColchao" type="CSGBox3D" parent="Quarto" unique_id=731383883]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.25, 1.6, -10.5)
+use_collision = true
+size = Vector3(9.5, 0.8, 8)
+material = SubResource("mat_invisible")
+cast_shadow = 0
+
+[node name="CamaCabeceira" type="CSGBox3D" parent="Quarto" unique_id=2115357830]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.25, 2.25, -14.625)
+use_collision = true
+size = Vector3(9.5, 4.5, 0.25)
+material = SubResource("mat_invisible")
+cast_shadow = 0
+
+[node name="Travesseiro" type="CSGBox3D" parent="Quarto" unique_id=1981716688]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.25, 2.25, -13.55)
+use_collision = true
+size = Vector3(6.5, 0.5, 1.5)
+material = SubResource("mat_invisible")
+cast_shadow = 0
+
+[node name="DonoCoberto" type="CSGBox3D" parent="Quarto" unique_id=971386288]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.25, 2.55, -9.9)
+use_collision = true
+size = Vector3(5.5, 1.1, 5.4)
+material = SubResource("mat_blanket")
+
+[node name="DonoCabeca" type="Sprite3D" parent="Quarto" unique_id=392477350]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.25, 4.15, -13.3)
+modulate = Color(0.8, 0.8, 0.85, 1)
+pixel_size = 0.0076
+billboard = 2
+alpha_cut = 1
+texture = ExtResource("mom_tex")
+
+[node name="Ronco" type="Label3D" parent="Quarto" unique_id=1824601959]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.25, 6.1, -13.4)
+pixel_size = 0.02
+billboard = 1
+text = "Zzz..."
+font_size = 96
+outline_size = 24
+
+[node name="CriadoMudo" type="CSGBox3D" parent="Quarto" unique_id=1039397183]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.9, 1, -13.25)
+use_collision = true
+size = Vector3(2.6, 2, 2.5)
+material = SubResource("mat_invisible")
+cast_shadow = 0
+
+[node name="GuardaRoupa" type="CSGBox3D" parent="Quarto" unique_id=552772288]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18.625, 3.25, -10.75)
+use_collision = true
+size = Vector3(2.25, 6.5, 7.5)
+material = SubResource("mat_invisible")
+cast_shadow = 0
+
+[node name="Vao" type="CSGBox3D" parent="Quarto/GuardaRoupa" unique_id=126274750]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.15, -2.75, 0)
+operation = 2
+size = Vector3(2.05, 1.1, 2.5)
+material = SubResource("mat_invisible")
+
+[node name="LustreQuarto" type="CSGBox3D" parent="Quarto" unique_id=1004034435]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 11.85, -9)
+size = Vector3(2.4, 0.3, 2.4)
+material = SubResource("mat_lamp_off")
+
+[node name="LuzNoturna" type="OmniLight3D" parent="Quarto" unique_id=1196754711]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 1, -4.2)
+light_color = Color(0.45, 0.55, 1, 1)
+light_energy = 1.5
+shadow_enabled = true
+omni_range = 14.0
+
+[node name="Quintal" type="Node3D" parent="." unique_id=1539052529 groups=["navigation_mesh_source_group"]]
+
+[node name="Grama" type="CSGBox3D" parent="Quintal" unique_id=939315191 groups=["grass"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 22)
+use_collision = true
+size = Vector3(40, 0.5, 14)
+material = SubResource("mat_grass")
+
+[node name="Rua" type="CSGBox3D" parent="Quintal" unique_id=54260435]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 35)
+use_collision = true
+size = Vector3(40, 0.5, 12)
+material = SubResource("mat_asphalt")
+
+[node name="CercaOeste" type="CSGBox3D" parent="Quintal" unique_id=2042124393]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 3, 22)
+use_collision = true
+size = Vector3(0.4, 6, 14)
+material = SubResource("mat_fence")
+
+[node name="CercaLeste" type="CSGBox3D" parent="Quintal" unique_id=22109059]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 3, 22)
+use_collision = true
+size = Vector3(0.4, 6, 14)
+material = SubResource("mat_fence")
+
+[node name="CercaSulA" type="CSGBox3D" parent="Quintal" unique_id=108518487]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.5, 3, 29)
+use_collision = true
+size = Vector3(17, 6, 0.4)
+material = SubResource("mat_fence")
+
+[node name="CercaSulB" type="CSGBox3D" parent="Quintal" unique_id=1935947091]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.5, 3, 29)
+use_collision = true
+size = Vector3(17, 6, 0.4)
+material = SubResource("mat_fence")
+
+[node name="PosteA" type="CSGBox3D" parent="Quintal" unique_id=469981877]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.25, 3.3, 29)
+use_collision = true
+size = Vector3(0.5, 6.6, 0.8)
+material = SubResource("mat_wood_dark")
+
+[node name="PosteB" type="CSGBox3D" parent="Quintal" unique_id=1135265867]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.25, 3.3, 29)
+use_collision = true
+size = Vector3(0.5, 6.6, 0.8)
+material = SubResource("mat_wood_dark")
+
+[node name="Portao" type="CSGBox3D" parent="Quintal" unique_id=1163929102]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 29)
+use_collision = true
+size = Vector3(6, 6, 0.2)
+material = SubResource("mat_metal")
+
+[node name="Casinha" type="CSGBox3D" parent="Quintal" unique_id=1102910621]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0.9, 20)
+use_collision = true
+size = Vector3(4, 1.8, 4)
+material = SubResource("mat_red")
+
+[node name="Vao" type="CSGBox3D" parent="Quintal/Casinha" unique_id=1466151044]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.375, 0.325)
+operation = 2
+size = Vector3(2.4, 1.15, 3.45)
+material = SubResource("mat_hide_dark")
+
+[node name="PosteLuz" type="CSGBox3D" parent="Quintal" unique_id=771340800]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.5, 3.5, 27)
+use_collision = true
+size = Vector3(0.4, 7, 0.4)
+material = SubResource("mat_black")
+
+[node name="PosteLuzLampada" type="CSGBox3D" parent="Quintal" unique_id=1697629873]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.5, 7.3, 27)
+size = Vector3(1.2, 0.6, 1.2)
+material = SubResource("mat_lamp_warm")
+
+[node name="PosteLuzLuz" type="OmniLight3D" parent="Quintal" unique_id=1478786400]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.5, 6.4, 26.2)
+light_color = Color(1, 0.84, 0.62, 1)
+light_energy = 3.0
+omni_range = 16.0
+
+[node name="Arbusto" type="CSGBox3D" parent="Quintal" unique_id=2141510701]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 1.2, 27)
+use_collision = true
+size = Vector3(3, 2.4, 3)
+material = SubResource("mat_bush")
+
+[node name="Vao" type="CSGBox3D" parent="Quintal/Arbusto" unique_id=1907343309]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.175, -0.7, 0)
+operation = 2
+size = Vector3(2.75, 1.1, 2.2)
+material = SubResource("mat_hide_dark")
+
+[node name="Coletaveis" type="Node3D" parent="." unique_id=366820082]
+
+[node name="Petisco" type="Area3D" parent="Coletaveis" unique_id=422303651 groups=["pickups"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.4, 7.6, -13.4)
+script = ExtResource("pickup_script")
+task_id = "treat"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Coletaveis/Petisco" unique_id=1967744846]
+shape = SubResource("pickup_shape")
+
+[node name="Frango" type="Sprite3D" parent="Coletaveis/Petisco" unique_id=847706315]
+pixel_size = 0.001
+billboard = 1
+alpha_cut = 1
+texture = ExtResource("chicken_tex")
+region_enabled = true
+region_rect = Rect2(320, 500, 1780, 1400)
+
+[node name="Brilho" type="OmniLight3D" parent="Coletaveis/Petisco" unique_id=1808248122]
+light_color = Color(1, 0.9, 0.6, 1)
+light_energy = 2.0
+omni_range = 6.0
+
+[node name="Bolinha" type="Area3D" parent="Coletaveis" unique_id=2046781385 groups=["pickups"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.1, 7.6, -2)
+script = ExtResource("pickup_script")
+task_id = "toy"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Coletaveis/Bolinha" unique_id=2073952594]
+shape = SubResource("pickup_shape")
+
+[node name="Bola" type="CSGSphere3D" parent="Coletaveis/Bolinha" unique_id=1013086205]
+radius = 0.55
+material = SubResource("mat_ball")
+
+[node name="Brilho" type="OmniLight3D" parent="Coletaveis/Bolinha" unique_id=1289853423]
+light_color = Color(1, 0.3, 0.3, 1)
+light_energy = 2.0
+omni_range = 6.0
+
+[node name="Chave" type="Area3D" parent="Coletaveis" unique_id=69478026 groups=["pickups"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.9, 3, -13.25)
+script = ExtResource("pickup_script")
+task_id = "key"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Coletaveis/Chave" unique_id=360156215]
+shape = SubResource("pickup_shape")
+
+[node name="Haste" type="CSGBox3D" parent="Coletaveis/Chave" unique_id=715496067]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.35, 0, 0)
+size = Vector3(0.9, 0.2, 0.1)
+material = SubResource("mat_gold")
+
+[node name="Argola" type="CSGTorus3D" parent="Coletaveis/Chave" unique_id=382531212]
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, -0.35, 0, 0)
+inner_radius = 0.18
+outer_radius = 0.4
+material = SubResource("mat_gold")
+
+[node name="Brilho" type="OmniLight3D" parent="Coletaveis/Chave" unique_id=858596532]
+light_color = Color(1, 0.85, 0.2, 1)
+light_energy = 2.0
+omni_range = 6.0
+
+[node name="Zonas" type="Node3D" parent="." unique_id=26394433]
+
+[node name="QuartoBarulho" type="Area3D" parent="Zonas" unique_id=640666137]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 5, -9.15)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Zonas/QuartoBarulho" unique_id=317767027]
+shape = SubResource("zone_QuartoBarulho")
+
+[node name="Portao" type="Area3D" parent="Zonas" unique_id=1134844140]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 27.1)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Zonas/Portao" unique_id=1831517021]
+shape = SubResource("zone_Portao")
+
+[node name="Fuga" type="Area3D" parent="Zonas" unique_id=335813831]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 32.25)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Zonas/Fuga" unique_id=774658820]
+shape = SubResource("zone_Fuga")
+
+[node name="SaidaQuarto" type="Marker3D" parent="Zonas" unique_id=1643600679]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 0.1, 0.5)
+
+[node name="Player" parent="." unique_id=2012664293 groups=["player"] instance=ExtResource("player")]
+transform = Transform3D(0.9993246, -0.036746014, 0, 0.036746014, 0.9993246, 0, 0, 0, 1, -7.4599066, 1.6503788, 24.660242)
+
+[node name="Navegacao" type="NavigationRegion3D" parent="." unique_id=678570362]
+navigation_mesh = SubResource("nav_mesh")
+
+[node name="Patrulha" type="Node3D" parent="." unique_id=824231186]
+
+[node name="CozinhaNorte" type="Marker3D" parent="Patrulha" unique_id=1954866017]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 0, -8)
+
+[node name="CozinhaLeste" type="Marker3D" parent="Patrulha" unique_id=694651695]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 0, 2)
+
+[node name="SalaNorte" type="Marker3D" parent="Patrulha" unique_id=566613067]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 0, 2)
+
+[node name="QuintalOeste" type="Marker3D" parent="Patrulha" unique_id=682103416]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 0, 21)
+
+[node name="QuintalLeste" type="Marker3D" parent="Patrulha" unique_id=768680694]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 24)
+
+[node name="SalaPorta" type="Marker3D" parent="Patrulha" unique_id=951879394]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, 12)
+
+[node name="CozinhaCentro" type="Marker3D" parent="Patrulha" unique_id=526255344]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 0, 1)
+
+[node name="Enemie" parent="." unique_id=1411287752 node_paths=PackedStringArray("patrol_route") instance=ExtResource("enemie")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 0.1, -6)
+patrol_route = NodePath("../Patrulha")
+
+[node name="HUD" type="CanvasLayer" parent="." unique_id=1967944542]
+
+[node name="Tasks" type="Label" parent="HUD" unique_id=820653806]
+offset_left = 24.0
+offset_top = 20.0
+offset_right = 760.0
+offset_bottom = 200.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/font_size = 20
+
+[node name="Message" type="Label" parent="HUD" unique_id=975028999]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -480.0
+offset_top = -210.0
+offset_right = 480.0
+offset_bottom = -130.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/font_size = 24
+horizontal_alignment = 1
+vertical_alignment = 2
+autowrap_mode = 3
+
+[node name="NoiseBar" type="ProgressBar" parent="HUD" unique_id=1945226269]
+visible = false
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -200.0
+offset_top = -80.0
+offset_right = 200.0
+offset_bottom = -52.0
+grow_horizontal = 2
+grow_vertical = 0
+max_value = 1.0
+show_percentage = false
+
+[node name="NoiseLabel" type="Label" parent="HUD/NoiseBar" unique_id=893647072]
+layout_mode = 0
+offset_top = -30.0
+offset_right = 400.0
+offset_bottom = -4.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
+text = "Barulho"
+horizontal_alignment = 1
+
+[node name="WinPanel" type="ColorRect" parent="HUD" unique_id=1505682773]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.75)
+
+[node name="WinText" type="Label" parent="HUD/WinPanel" unique_id=1301152745]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 40
+text = "Você fugiu!
+
+O pinscher está livre.
+
+Aperte Enter para jogar de novo."
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="LosePanel" type="ColorRect" parent="HUD" unique_id=1201135198]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.25, 0, 0, 0.75)
+
+[node name="LoseText" type="Label" parent="HUD/LosePanel" unique_id=1613114040]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 40
+text = "Você foi pego!
+
+Aperte Enter para tentar de novo."
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HiddenLabel" type="Label" parent="HUD" unique_id=190868189]
+visible = false
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -200.0
+offset_top = 20.0
+offset_right = 200.0
+offset_bottom = 60.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0.5, 1, 0.6, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/font_size = 26
+text = "ESCONDIDO"
+horizontal_alignment = 1
+
+[node name="PauseMenu" parent="." instance=ExtResource("pause_menu")]
+
+[node name="Esconderijos" type="Node3D" parent="." unique_id=1829164281]
+
+[node name="DebaixoDoSofa" type="Area3D" parent="Esconderijos" unique_id=109109421]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17.15, 0.525, 9)
+script = ExtResource("hide_script")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Esconderijos/DebaixoDoSofa" unique_id=1267419204]
+shape = SubResource("hide_DebaixoDoSofa")
+
+[node name="Brilho" type="OmniLight3D" parent="Esconderijos/DebaixoDoSofa" unique_id=1331944751]
+light_color = Color(0.4, 1, 0.5, 1)
+light_energy = 0.5
+omni_range = 2.5
+
+[node name="CaixaPapelao" type="Area3D" parent="Esconderijos" unique_id=944834630]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.275, 0.525, -1.2)
+script = ExtResource("hide_script")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Esconderijos/CaixaPapelao" unique_id=2007307015]
+shape = SubResource("hide_CaixaPapelao")
+
+[node name="Brilho" type="OmniLight3D" parent="Esconderijos/CaixaPapelao" unique_id=1028811904]
+light_color = Color(0.4, 1, 0.5, 1)
+light_energy = 0.5
+omni_range = 2.5
+
+[node name="ArmarioBancada" type="Area3D" parent="Esconderijos" unique_id=121431913]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.3, 0.525, -13.6)
+script = ExtResource("hide_script")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Esconderijos/ArmarioBancada" unique_id=828745945]
+shape = SubResource("hide_ArmarioBancada")
+
+[node name="Brilho" type="OmniLight3D" parent="Esconderijos/ArmarioBancada" unique_id=1955536897]
+light_color = Color(0.4, 1, 0.5, 1)
+light_energy = 0.5
+omni_range = 2.5
+
+[node name="CaixaFeira" type="Area3D" parent="Esconderijos" unique_id=258926369]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.2, 0.525, 13.325)
+script = ExtResource("hide_script")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Esconderijos/CaixaFeira" unique_id=63507334]
+shape = SubResource("hide_CaixaFeira")
+
+[node name="Brilho" type="OmniLight3D" parent="Esconderijos/CaixaFeira" unique_id=1197365764]
+light_color = Color(0.4, 1, 0.5, 1)
+light_energy = 0.5
+omni_range = 2.5
+
+[node name="DebaixoDaCama" type="Area3D" parent="Esconderijos" unique_id=1670653260]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0.5, -8.725)
+script = ExtResource("hide_script")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Esconderijos/DebaixoDaCama" unique_id=1075678305]
+shape = SubResource("hide_DebaixoDaCama")
+
+[node name="Brilho" type="OmniLight3D" parent="Esconderijos/DebaixoDaCama" unique_id=287401951]
+light_color = Color(0.4, 1, 0.5, 1)
+light_energy = 0.5
+omni_range = 2.5
+
+[node name="GuardaRoupa" type="Area3D" parent="Esconderijos" unique_id=281774041]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18.725, 0.525, -10.75)
+script = ExtResource("hide_script")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Esconderijos/GuardaRoupa" unique_id=1398080645]
+shape = SubResource("hide_GuardaRoupa")
+
+[node name="Brilho" type="OmniLight3D" parent="Esconderijos/GuardaRoupa" unique_id=1884168069]
+light_color = Color(0.4, 1, 0.5, 1)
+light_energy = 0.5
+omni_range = 2.5
+
+[node name="Casinha" type="Area3D" parent="Esconderijos" unique_id=242715592]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0.55, 20.075)
+script = ExtResource("hide_script")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Esconderijos/Casinha" unique_id=1905500607]
+shape = SubResource("hide_Casinha")
+
+[node name="Brilho" type="OmniLight3D" parent="Esconderijos/Casinha" unique_id=1727732708]
+light_color = Color(0.4, 1, 0.5, 1)
+light_energy = 0.5
+omni_range = 2.5
+
+[node name="Arbusto" type="Area3D" parent="Esconderijos" unique_id=316468798]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18.075, 0.525, 27)
+script = ExtResource("hide_script")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Esconderijos/Arbusto" unique_id=1456740724]
+shape = SubResource("hide_Arbusto")
+
+[node name="Brilho" type="OmniLight3D" parent="Esconderijos/Arbusto" unique_id=1962151002]
+light_color = Color(0.4, 1, 0.5, 1)
+light_energy = 0.5
+omni_range = 2.5
+
+[node name="Moveis" type="Node3D" parent="."]
+
+[node name="Sofa" parent="Moveis" instance=ExtResource("furn_Sofa")]
+transform = Transform3D(0, 0, 2.5281, 0, 2.5166, 0, -2.8302, 0, 0, -17.4747, 0.0252, 6)
+
+[node name="Aparador" parent="Moveis" instance=ExtResource("furn_ShortCloset")]
+transform = Transform3D(1.6026, 0, 0, 0, 2.2907, 0, 0, 0, 2.3652, -18.5, 0.0229, -1.7353)
+
+[node name="Estante" parent="Moveis" instance=ExtResource("furn_Bookcase_Books")]
+transform = Transform3D(2.3098, 0, 0, 0, 2.0178, 0, 0, 0, 2.2388, -15.1342, 0.0404, -2.1007)
+
+[node name="MesaCentro" parent="Moveis" instance=ExtResource("furn_Table2")]
+transform = Transform3D(2.8169, 0, 0, 0, 1.9277, 0, 0, 0, 1.6187, -8.5, 0, 10.25)
+
+[node name="RackTV" parent="Moveis" instance=ExtResource("furn_Desk")]
+transform = Transform3D(0, 0, -1.7857, 0, 2.1739, 0, 2.4725, 0, 0, 0.9464, 0, 11.75)
+
+[node name="MesaJantar" parent="Moveis" instance=ExtResource("furn_Table")]
+transform = Transform3D(0, 0, 2.518, 0, 3.6145, 0, -3.169, 0, 0, 11, 0, 8)
+
+[node name="CadeiraOeste" parent="Moveis" instance=ExtResource("furn_Chair")]
+transform = Transform3D(0, 0, 3.125, 0, 3.1589, 0, -4, 0, 0, 6.1562, 0.0316, 8)
+
+[node name="CadeiraLeste" parent="Moveis" instance=ExtResource("furn_Chair")]
+transform = Transform3D(0, 0, -3.125, 0, 3.1589, 0, 4, 0, 0, 15.8438, 0.0316, 8)
+
+[node name="Banquinho" parent="Moveis" instance=ExtResource("furn_Stool")]
+transform = Transform3D(3.2, 0, 0, 0, 3.7931, 0, 0, 0, 2.963, 12.8, 0.0379, -9.2)
+
+[node name="Cama" parent="Moveis" instance=ExtResource("furn_BedDouble")]
+transform = Transform3D(3.3676, 0, 0, 0, 2.859, 0, 0, 0, 1.9366, -0.854, 0.0429, -11.9903)
+
+[node name="CriadoMudo" parent="Moveis" instance=ExtResource("furn_NightStand")]
+transform = Transform3D(4.4828, 0, 0, 0, 3.9216, 0, 0, 0, 5, -9.9, 0, -13.25)
+
+[node name="GuardaRoupaA" parent="Moveis" instance=ExtResource("furn_Closet")]
+transform = Transform3D(0, 0, 2.5952, 0, 2.1812, 0, -2.4038, 0, 0, -18.6367, 0.0218, -12.6274)
+
+[node name="GuardaRoupaB" parent="Moveis" instance=ExtResource("furn_Closet")]
+transform = Transform3D(0, 0, 2.5952, 0, 2.1812, 0, -2.4038, 0, 0, -18.6367, 0.0218, -8.8774)
+
+[node name="Porta" parent="Estrutura/PortaQuarto" instance=ExtResource("furn_Door3")]
+transform = Transform3D(2.5828, 0, 0, 0, 2.6786, 0, 0, 0, 1.2121, 0.0114, -4.2375, -0.0061)
+
+[node name="InventoryScreen" parent="." instance=ExtResource("inventory_screen")]
+
+[node name="MapScreen" parent="." instance=ExtResource("map_screen")]

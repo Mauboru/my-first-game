@@ -1,0 +1,54 @@
+[gd_scene format=3 uid="uid://cbvuedd8yqsau"]
+
+[ext_resource type="Texture2D" uid="uid://cir8vr0rfc2nx" path="res://assets/sky/NightEnvironmentHDRI003_1K_TONEMAPPED.jpg" id="1_vonw3"]
+[ext_resource type="PackedScene" uid="uid://dgkyklooaehx8" path="res://entities/player/player.tscn" id="2_oi3di"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_gv5m4"]
+panorama = ExtResource("1_vonw3")
+
+[sub_resource type="Sky" id="Sky_gv5m4"]
+sky_material = SubResource("PanoramaSkyMaterial_gv5m4")
+
+[sub_resource type="Environment" id="Environment_xreih"]
+background_mode = 2
+background_color = Color(0.49411765, 0, 0, 1)
+sky = SubResource("Sky_gv5m4")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_xreih"]
+size = Vector3(40, 0.5, 40)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_lfhap"]
+size = Vector3(10, 10, 1)
+
+[node name="Level" type="Node3D" unique_id=89829773]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.028995514, 0, 0)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=58666284]
+environment = SubResource("Environment_xreih")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=607588259]
+transform = Transform3D(-0.0016426907, -0.9264429, 0.37643176, -0.0040428173, 0.37643537, 0.92643434, -0.9999906, 1.16414225e-10, -0.0043638065, 1.7655157, 10.232825, 0.92507994)
+shadow_enabled = true
+
+[node name="Entities" type="Node3D" parent="." unique_id=1291238048]
+
+[node name="Player" parent="Entities" unique_id=1505795711 instance=ExtResource("2_oi3di")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4425726, 4.9984093)
+
+[node name="Environment" type="Node3D" parent="." unique_id=487963195]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Environment" unique_id=973594501]
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Environment/StaticBody3D" unique_id=1057496101]
+size = Vector3(40, 0.5, 40)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Environment/StaticBody3D" unique_id=1118088152]
+shape = SubResource("BoxShape3D_xreih")
+
+[node name="StaticBody3D2" type="StaticBody3D" parent="Environment" unique_id=1783700498]
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Environment/StaticBody3D2" unique_id=882094906]
+size = Vector3(10, 10, 1)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Environment/StaticBody3D2" unique_id=644722170]
+shape = SubResource("BoxShape3D_lfhap")

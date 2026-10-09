@@ -1,0 +1,46 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://ui/inventory_screen.gd" id="1_script"]
+
+[node name="InventoryScreen" type="CanvasLayer"]
+process_mode = 3
+layer = 9
+visible = false
+script = ExtResource("1_script")
+
+[node name="Fundo" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.7)
+
+[node name="Centro" type="CenterContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Caixa" type="VBoxContainer" parent="Centro"]
+custom_minimum_size = Vector2(420, 0)
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Titulo" type="Label" parent="Centro/Caixa"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
+text = "INVENTÁRIO"
+horizontal_alignment = 1
+
+[node name="Itens" type="VBoxContainer" parent="Centro/Caixa"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Dica" type="Label" parent="Centro/Caixa"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.7, 0.7, 1)
+theme_override_font_sizes/font_size = 18
+text = "I para fechar"
+horizontal_alignment = 1

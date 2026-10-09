@@ -1,0 +1,9 @@
+# Godot 4: cache de importação, regenerado ao abrir o projeto
+.godot/
+
+# Arquivos fora do jogo (modelos antigos, pacotes baixados)
+_unused/
+
+# Jogo exportado
+*.exe
+*.pck

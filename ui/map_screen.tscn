@@ -1,0 +1,51 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://ui/map_screen.gd" id="1_script"]
+[ext_resource type="Script" path="res://ui/map_view.gd" id="2_view"]
+
+[node name="MapScreen" type="CanvasLayer"]
+process_mode = 3
+layer = 9
+visible = false
+script = ExtResource("1_script")
+
+[node name="Fundo" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.8)
+
+[node name="Mapa" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2_view")
+
+[node name="Titulo" type="Label" parent="."]
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 16.0
+offset_bottom = 76.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 40
+text = "MAPA"
+horizontal_alignment = 1
+
+[node name="Dica" type="Label" parent="."]
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -48.0
+offset_bottom = -16.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.7, 0.7, 0.7, 1)
+theme_override_font_sizes/font_size = 18
+text = "Seta amarela: você   |   Pontos verdes: esconderijos   |   M para fechar"
+horizontal_alignment = 1
